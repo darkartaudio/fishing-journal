@@ -2,14 +2,14 @@
   "development": {
     "username": "postgres",
     "password": "?.Arn0ld.?",
-    "database": "express_auth_dev",
+    "database": "fishing-journal_dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "?.Arn0ld.?",
-    "database": "express_auth_test",
+    "database": "fishing-journal_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
