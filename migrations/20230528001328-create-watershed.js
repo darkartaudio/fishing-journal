@@ -9,14 +9,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      siteName: {
         type: Sequelize.STRING
       },
-      flowApi: {
+      siteCode: {
         type: Sequelize.STRING
       },
-      weatherApi: {
-        type: Sequelize.STRING
+      latitude: {
+        type: Sequelize.FLOAT
+      },
+      longitude: {
+        type: Sequelize.FLOAT
+      },
+      timeZone: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
