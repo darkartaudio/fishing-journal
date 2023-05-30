@@ -14,8 +14,10 @@ module.exports = {
     */
     const axios = require('axios');
 
+    // requests a list of all active stream-type water gauges in Tennessee
     await axios.get('https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&stateCd=TN&siteType=ST&siteStatus=active')
     .then(async response => {
+      // filters the list of stations to only those of water-flow type (in other words, excludes water-depth type)
       const flowOnly = response.data.value.timeSeries.filter(station => {
         return station.variable.variableCode[0].value === '00060';
       });
