@@ -16,6 +16,76 @@ function degreesToDirection(degrees) {
     return directionArray[index];
 }
 
+router.get('/', isLoggedIn, (req, res) => {
+    entrie.findAll({
+        where: { id: req.user.get().id }
+    }
+    ).then(entries => {
+        let resultArray = [];
+        entries.forEach(e => {
+            let watershedName = watershed.findOne({
+                where: {
+                    id: e.watershedId
+                }
+            })
+            .then(w => {
+                return  w.siteName;
+            })
+            .catch(err => {console.log(err)});
+
+            let specieInfo = specie.findOne({
+                where: {
+                    id: e.specieId
+                }
+            })
+            .then(s => {
+                return { name: s.name, img: s.img };
+            })
+            .catch(err => {console.log(err)});
+
+            let techniqueName = technique.findOne({
+                where: {
+                    id: e.techniqueId
+                }
+            })
+            .then(t => {
+                return t.name;
+            })
+            .catch(err => {console.log(err)});
+
+            let lureName = lure.findOne({
+                where: {
+                    id: e.lureId
+                }
+            })
+            .then(l => {
+                return l.name;
+            })
+            .catch(err => {console.log(err)});
+            
+            Promise.all([watershedName, specieInfo, techniqueName, lureName])
+            .then(result => {
+                resultArray.push({
+                    ...e.toJSON(),
+                    watershedName: result[0],
+                    specieName: result[1].name,
+                    specieImg: result[1].img,
+                    techniqueName: result[2],
+                    lureName: result[3]
+                });
+            })
+            .catch(err => console.log(err));
+        });
+
+        // pick up here - need to somehow resolve Promise before res.render
+
+        return res.render('entries/index', {
+            entries: resultArray
+        });
+    })
+    .catch(err => console.log(err));
+});
+
 router.get('/new', isLoggedIn, (req, res) => {
     watershed.findAll().then(watersheds => {
         specie.findAll().then(species => {
