@@ -1,0 +1,61 @@
+<form action="/entries/new" method="POST">
+    <div>
+        <label for="timestamp">Timestamp</label>
+        <input type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" required />
+    </div>
+    <div>
+        <label for="watershedId">Watershed</label>
+        <select name="watershedId" id="watershedId">
+            <% watersheds.forEach(w => { %>
+                <option value="<%= w.id %>"><%= w.siteName %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div>
+        <label for="waterTemp">Water Temperature</label>
+        <input type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="60" oninput="this.nextElementSibling.value = this.value" />
+        <output>60</output> F
+    </div>
+    <div>
+        <label for="speciesId">Species</label>
+        <select name="speciesId" id="speciesId">
+            <% species.forEach(s => { %>
+                <option value="<%= s.id %>"><%= s.name %></option>
+            <% }); %>
+        </select>
+        <a href="/species/new">new species</a>
+    </div>
+    <div>
+        <label for="length">Length</label>
+        <input type="range" name="length" id="length" min="0" max="100" step="1" value="12" oninput="this.nextElementSibling.value = this.value" />
+        <output>12</output> in
+    </div>
+    <div>
+        <label for="weight">Weight</label>
+        <input type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="2" oninput="this.nextElementSibling.value = this.value" />
+        <output>2</output> lbs
+    </div>
+    <div>
+        <label for="techniqueId">Technique</label>
+        <select name="techniqueId" id="techniqueId">
+            <% techniques.forEach(t => { %>
+                <option value="<%= t.id %>"><%= t.name %></option>
+            <% }); %>
+        </select>
+        <a href="/techniques/new">new technique</a>
+    </div>
+    <div>
+        <label for="lureId">Lure</label>
+        <select name="lureId" id="lureId">
+            <% lures.forEach(l => { %>
+                <option value="<%= l.id %>"><%= l.name %></option>
+            <% }); %>
+        </select>
+        <a href="/lures/new">new lure</a>
+    </div>
+    <div>
+        <label for="comment">Comment</label>
+        <input type="text" name="comment" id="comment">
+    </div>
+    <button type="submit">Submit</button>
+</form>

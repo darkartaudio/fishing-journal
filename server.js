@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 
 app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(__dirname + '/public'));
+// app.use(express.static(__dirname + '/public'));
 app.use(layouts);
 
 app.use(flash());            // flash middleware
@@ -43,36 +43,12 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', require('./controllers/auth'));
+app.use('/entries', require('./controllers/entries'));
 
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get(); 
   res.render('profile', { id, name, email });
 });
-
- axios.get('https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&stateCd=TN&siteType=ST&siteStatus=active')
-    .then(response => {
-      response.data.value.timeSeries.forEach(station => {
-        if (station.sourceInfo.siteCode[0].value === '03408500') {
-          console.log(station.variable.variableCode[0].value);
-        }
-      });
-      // response.data.value.timeSeries.forEach(station => {
-      //   console.log()
-      // });
-      // const stations = response.data.value.timeSeries.map(station => {
-      //   return {
-      //     siteName: station.sourceInfo.siteName,
-      //     siteCode: station.sourceInfo.siteCode.value,
-      //     latitude: station.sourceInfo.geoLocation.geogLocation.latitude.toFixed(2),
-      //     longitude: station.sourceInfo.geoLocation.geogLocation.longitude.toFixed(2),
-      //     timeZone: parseInt(station.sourceInfo.timeZoneInfo.defaultTimeZone.zoneOffset.slice(0,3)),
-      //     createdAt: new Date().toISOString(),
-      //     updatedAt: new Date().toISOString()
-
-      //   };
-      // });
-    })
-    .catch(err => console.log('Error', err));
 
 // axios.get('https://archive-api.open-meteo.com/v1/archive?latitude=36.16&longitude=-85.50&start_date=2023-05-06&end_date=2023-05-06&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant&timezone=auto&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch')
 // .then(response => {
@@ -90,17 +66,6 @@ app.get('/profile', isLoggedIn, (req, res) => {
 //     // console.log(response.data.value.timeSeries[0].values[0].value[0].dateTime); // .value <- is flow in CFS --- .dateTime is timerange -05:00 at end is offest from UTC
 //     console.log(response.data.value.timeSeries[0].sourceInfo.geoLocation.geogLocation.latitude.toFixed(2)); // <- GPS coordinates for poling station
 //     // return res.json({ data: response.data });
-// })
-// .catch(err => console.log(err));
-
-// axios.get('https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&stateCd=TN&siteType=ST&siteStatus=active')
-// .then(function (response) {
-//     console.log(parseInt(response.data.value.timeSeries[0].sourceInfo.timeZoneInfo.defaultTimeZone.zoneOffset.slice(0,3)));
-
-//     // siteName = response.data.value.timeSeries[0].sourceInfo.siteName
-//     // siteCode = response.data.value.timeSeries[0].sourceInfo.siteCode
-//     // latitude/longitude = response.data.value.timeSeries[0].sourceInfo.geoLocation.geogLocation.latitude.toFixed(2);
-//     // timezone modifier = parseInt(response.data.value.timeSeries[0].sourceInfo.timeZoneInfo.defaultTimeZone.zoneOffset.slice(0,3))
 // })
 // .catch(err => console.log(err));
 

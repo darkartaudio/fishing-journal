@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      journalId: {
+      userId: {
         type: Sequelize.INTEGER
       },
       timestamp: {
@@ -18,7 +18,7 @@ module.exports = {
       watershedId: {
         type: Sequelize.INTEGER
       },
-      speciesId: {
+      specieId: {
         type: Sequelize.INTEGER
       },
       techniqueId: {
@@ -55,7 +55,16 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       waterFlow: {
+        type: Sequelize.FLOAT
+      },
+      barometer: {
+        type: Sequelize.FLOAT
+      },
+      cloudCover: {
         type: Sequelize.INTEGER
+      },
+      dailyPrecip: {
+        type: Sequelize.FLOAT
       },
       createdAt: {
         allowNull: false,

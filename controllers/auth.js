@@ -28,11 +28,11 @@ router.post('/login', passport.authenticate('local', {
 
 router.post('/signup', async (req, res) => {
   // we now have access to the user info (req.body);
-  const { email, name, password } = req.body; // goes and us access to whatever key/value inside of the object
+  const { email, name, password, timezone } = req.body; // goes and us access to whatever key/value inside of the object
   try {
     const [_user, created] = await user.findOrCreate({
         where: { email },
-        defaults: { name, password }
+        defaults: { name, password, timezone: parseInt(timezone) }
     });
 
     if (created) {

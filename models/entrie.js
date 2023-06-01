@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.entrie.belongsTo(models.journal);
+      models.entrie.belongsTo(models.user);
       models.entrie.belongsTo(models.watershed);
       models.entrie.belongsTo(models.specie);
       models.entrie.belongsTo(models.technique);
@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   entrie.init({
-    journalId: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     timestamp: DataTypes.DATE,
     watershedId: DataTypes.INTEGER,
-    speciesId: DataTypes.INTEGER,
+    specieId: DataTypes.INTEGER,
     techniqueId: DataTypes.INTEGER,
     lureId: DataTypes.INTEGER,
     length: DataTypes.FLOAT,
@@ -32,9 +32,12 @@ module.exports = (sequelize, DataTypes) => {
     airTemp: DataTypes.FLOAT,
     windSpeed: DataTypes.FLOAT,
     windDirection: DataTypes.STRING,
+    barometer: DataTypes.FLOAT,
+    cloudCover: DataTypes.INTEGER,
     dailyHigh: DataTypes.FLOAT,
     dailyLow: DataTypes.FLOAT,
-    waterFlow: DataTypes.INTEGER
+    dailyPrecip: DataTypes.FLOAT,
+    waterFlow: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'entrie',

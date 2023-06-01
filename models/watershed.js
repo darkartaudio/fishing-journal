@@ -11,13 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.watershed.hasMany(models.journal);
+      models.watershed.hasMany(models.entrie);
     }
   }
   watershed.init({
-    name: DataTypes.STRING,
-    flowApi: DataTypes.STRING,
-    weatherApi: DataTypes.STRING
+    siteName: DataTypes.STRING,
+    siteCode: DataTypes.STRING,
+    latitude: DataTypes.FLOAT,
+    longitude: DataTypes.FLOAT,
+    timeZone: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'watershed',
