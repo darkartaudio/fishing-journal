@@ -18,13 +18,25 @@ function degreesToDirection(degrees) {
 
 router.get('/', isLoggedIn, (req, res) => {
     // find all of user's journal entries, along with watershed, specie, technique, and lure info
+    // order with most recent entry first
     entrie.findAll({
-        where: { id: req.user.get().id },
-        include: [watershed, specie, technique, lure]
+        where: { userId: req.user.get().id },
+        include: [user, watershed, specie, technique, lure],
+        order: [['timestamp', 'DESC']]
     })
-    .then(entries => res.render('entries/index', { entries: entries.map(e => e.toJSON())}))
+    // render the list of entries
+    .then(entries => res.render('entries/index', { entries: entries.map(e => e.toJSON()), moment: moment }))
     .catch(err => console.log(err));
 });
+
+// router.get('/:id', isLoggedIn, (req, res) => {
+//     entrie.findOne({
+//         where: {
+//             userId: req.user.get().id,
+//             id: 
+//         }
+//     })
+// });
 
 router.get('/new', isLoggedIn, (req, res) => {
     watershed.findAll().then(watersheds => {

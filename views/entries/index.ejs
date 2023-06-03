@@ -1,5 +1,48 @@
-<ul>
-    <% entries.forEach(e => { %>
-        <li><%= e.timestamp %></li>
-    <% }); %>
-</ul>
+<div class="container">
+    <div class="section">
+        <div class="columns">
+          <div class="column has-text-centered">
+            <h1 class="title mb-0">Journal Entries</h1>
+            <a href="/entries/new">new entry</a>
+          </div>
+        </div>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-6">
+                <% if(entries.length > 0) { 
+                    entries.forEach(e => { %>
+                    <a href="/entries/<%= e.id %>">
+                    <div class="card large">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="<%= e.specie.img %>" alt="<%= e.specie.name %>">
+                                    </figure>
+                                    <p class="title is-6">
+                                        <%= e.specie.name %><br />
+                                        <%= e.length %> in, <%= e.weight %> lbs
+                                    </p>
+                                </div>
+                                <div class="media-content">
+                                    <p class="subtitle is-6">
+                                        <%= e.watershed.siteName %>
+                                    </p>
+                                    <p>
+                                        <%= moment(e.timestamp).format('LLL') %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                <% });
+                } else { %>
+                    <p>
+                        You don't have any journal entries yet.
+                    </p>
+                <% } %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

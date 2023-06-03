@@ -1,28 +1,33 @@
-<form action="/auth/signup" method="POST">
-  <div>
-    <input name="name" type="text" />
-    <label for="name">Name</label>
+<div class="container">
+  <div class="section">
+    <div class="columns">
+      <div class="column has-text-centered">
+        <h1 class="title">Login</h1><br />
+      </div>
+    </div>
+    <form action="/auth/signup" method="POST">
+      <div>
+        <label for="name">Name</label>
+        <input name="name" type="text" />
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input name="email" type="email" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input name="password" type="password" />
+      </div>
+      <div>
+        <label class="form-label" for="timezone">Timezone</label>
+        <select name="timezone" id="timezone">
+          <option value="-4">EDT (Knoxville)</option>
+          <option value="-5">CDT (Nashville)</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit">Sign Up</button>
+      </div>
+    </form>
   </div>
-
-  <div>
-    <select name="timezone" id="timezone">
-      <option value="-4">EDT (Knoxville)</option>
-      <option value="-5">CDT (Nashville)</option>
-    </select>
-    <label class="form-label" for="timezone">Timezone</label>
-  </div>
-  
-  <div>
-    <input name="email" type="email" />
-    <label for="email">Email address</label>
-  </div>
-
-  <div>
-    <input name="password" type="password" />
-    <label for="password">Password</label>
-  </div>
-  
-  <div>
-    <button type="submit">Sign up</button>
-  </div>
-</form>
+</div>

@@ -1,11 +1,19 @@
 <% if (alerts.error) { %>
-    <% alerts.error.forEach(msg => { %>
-        <div><%= msg %></div>
-   <% }) %>
+    <div class="columns">
+        <div class="column has-text-centered">
+            <% alerts.error.forEach(msg => { %>
+                <div class="has-text-white has-background-danger"><%= msg %></div>
+            <% }) %>
+        </div>
+    </div>
 <% } %>
 
 <% if (alerts.success) { %>
-    <% alerts.success.forEach(msg => { %>
-        <div><%= msg %></div>
-   <% }) %>
+    <div class="columns">
+        <div class="column has-text-centered">
+            <% alerts.success.forEach(msg => { %>
+                <div class="has-text-white has-background-success"><%= msg %></div>
+            <% }) %>
+        </div>
+    </div>
 <% } %>
