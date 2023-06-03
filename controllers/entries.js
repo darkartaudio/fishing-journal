@@ -17,72 +17,12 @@ function degreesToDirection(degrees) {
 }
 
 router.get('/', isLoggedIn, (req, res) => {
+    // find all of user's journal entries, along with watershed, specie, technique, and lure info
     entrie.findAll({
-        where: { id: req.user.get().id }
-    }
-    ).then(entries => {
-        let resultArray = [];
-        entries.forEach(e => {
-            let watershedName = watershed.findOne({
-                where: {
-                    id: e.watershedId
-                }
-            })
-            .then(w => {
-                return  w.siteName;
-            })
-            .catch(err => {console.log(err)});
-
-            let specieInfo = specie.findOne({
-                where: {
-                    id: e.specieId
-                }
-            })
-            .then(s => {
-                return { name: s.name, img: s.img };
-            })
-            .catch(err => {console.log(err)});
-
-            let techniqueName = technique.findOne({
-                where: {
-                    id: e.techniqueId
-                }
-            })
-            .then(t => {
-                return t.name;
-            })
-            .catch(err => {console.log(err)});
-
-            let lureName = lure.findOne({
-                where: {
-                    id: e.lureId
-                }
-            })
-            .then(l => {
-                return l.name;
-            })
-            .catch(err => {console.log(err)});
-            
-            Promise.all([watershedName, specieInfo, techniqueName, lureName])
-            .then(result => {
-                resultArray.push({
-                    ...e.toJSON(),
-                    watershedName: result[0],
-                    specieName: result[1].name,
-                    specieImg: result[1].img,
-                    techniqueName: result[2],
-                    lureName: result[3]
-                });
-            })
-            .catch(err => console.log(err));
-        });
-
-        // pick up here - need to somehow resolve Promise before res.render
-
-        return res.render('entries/index', {
-            entries: resultArray
-        });
+        where: { id: req.user.get().id },
+        include: [watershed, specie, technique, lure]
     })
+    .then(entries => res.render('entries/index', { entries: entries.map(e => e.toJSON())}))
     .catch(err => console.log(err));
 });
 
@@ -110,9 +50,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 router.post('/new', isLoggedIn, (req, res) => {
     watershed.findOne({
-        where: {
-            id: req.body.watershedId
-        }
+        where: { id: req.body.watershedId }
     })
     .then(ws => {
         
@@ -163,14 +101,8 @@ router.post('/new', isLoggedIn, (req, res) => {
                 insertEntrie.dailyLow = weatherRes.data.daily.temperature_2m_min[0];
                 insertEntrie.dailyPrecip = weatherRes.data.daily.precipitation_sum[0];
 
-                // console.log(insertEntrie);
-                // console.log(weatherRes.data);
-
                 entrie.create(insertEntrie)
-                .then(createdEntrie => {
-                    console.log(createdEntrie.toJSON());
-                    return res.redirect('/entries');
-                })
+                .then(createdEntrie => res.redirect('/entries'))
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
