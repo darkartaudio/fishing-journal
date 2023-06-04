@@ -256,7 +256,7 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', isLoggedIn, function(req, res) {
     entrie.destroy({
         where: { 
             userId: req.user.get().id,

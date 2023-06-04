@@ -101,5 +101,18 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.delete('/:id', isLoggedIn, function(req, res) {
+    specie.destroy({
+        where: {
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(numRowsDeleted => {
+        req.flash(`Species #${req.params.id} deleted`);
+        res.redirect('/species');
+    })
+    .catch(err => console.log(err));
+});
+
 
 module.exports = router;
