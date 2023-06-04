@@ -86,4 +86,20 @@ router.post('/new', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.put('/edit/:id', isLoggedIn, (req, res) => {
+    specie.findOne({
+        where: { id: parseInt(req.params.id) }
+    })
+    .then(foundSpecie => {
+        const updateSpecie = {...req.body};
+        specie.update(updateSpecie, {
+            where: { id: parseInt(req.params.id) }
+        })
+        .then(numRowsChanged => res.redirect(`/species/${parseInt(req.params.id)}`))
+        .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
+
+
 module.exports = router;
