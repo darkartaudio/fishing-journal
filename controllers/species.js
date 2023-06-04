@@ -11,6 +11,10 @@ router.get('/', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.get('/new', isLoggedIn, (req, res) => {
+    return res.render('species/new');
+});
+
 router.get('/edit/:id', isLoggedIn, (req, res) => {
     specie.findOne({
         where: {
@@ -20,6 +24,24 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
     .then(found => {
         if(found) {
             return res.render('species/edit', { specie: found.toJSON() });
+        } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
+            req.flash('Species not found.');
+            res.redirect('/species');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
+router.get('/delete/:id', isLoggedIn, (req, res) => {
+    specie.findOne({
+        where: {
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(found => {
+        if(found) {
+            return res.render('species/delete', { specie: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('Species not found.');
@@ -41,6 +63,23 @@ router.get('/:id', isLoggedIn, (req, res) => {
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('Species not found.');
+            res.redirect('/species');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
+router.post('/new', isLoggedIn, (req, res) => {
+    const insertSpecie = {...req.body};
+    specie.findOrCreate({
+        where: { name: insertSpecie.name }
+    })
+    .then((row, created) => {
+        if(created) {
+            req.flash(`Created species ${row.name}`);
+            res.redirect('/species');
+        } else {
+            req.flash(`Species ${row.name} already exists`);
             res.redirect('/species');
         }
     })

@@ -3,7 +3,7 @@
         <div class="columns">
             <div class="column has-text-centered">
                 <h1 class="title mb-0">Species</h1>
-                <a href="/species/new">(new)</a>
+                (<a href="/species/new">new</a>)
             </div>
         </div>
         <div id="app" class="row columns is-multiline">
@@ -21,10 +21,6 @@
                                         <p class="title is-6">
                                             <%= s.name %><br />
                                             <a href="<%= s.wiki %>">wikipedia</a>
-                                        </p>
-                                        <p class="is-6">
-                                            <a href="/species/edit/<%= s.id %>">(edit)</a><br />
-                                            <a href="/species/delete/<%= s.id %>">(delete)</a>   
                                         </p>
                                     </div>
                                 </div>

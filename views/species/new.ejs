@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="section">
+        <div class="columns">
+            <div class="column has-text-centered">
+            <h1 class="title">New Species</h1><br />
+            </div>
+        </div>
+        <form action="/species/new" method="POST">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Species name..." required />
+            </div>
+            <div>
+                <label for="img">Image</label>
+                <input type="text" id="img" name="img" placeholder="Image URL (optional)" />
+            </div>
+            <div>
+                <label for="wiki">Wikipedia</label>
+                <input type="text" id="wiki" name="wiki" placeholder="Wikipedia URL (optional)" />
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>

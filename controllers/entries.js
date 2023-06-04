@@ -51,27 +51,6 @@ router.get('/new', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.get('/:id', isLoggedIn, (req, res) => {
-    console.log('THIS IS THE ID =====>', req.params.id);
-    entrie.findOne({
-        where: {
-            userId: req.user.get().id,
-            id: parseInt(req.params.id)
-        },
-        include: [user, watershed, specie, technique, lure]
-    })
-    .then(found => {
-        if(found) {
-            return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
-        } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Entry not found.');
-            res.redirect('/entries');
-        }
-    })
-    .catch(err => console.log(err));
-});
-
 router.get('/edit/:id', isLoggedIn, (req, res) => {
     entrie.findOne({
         where: {
@@ -106,7 +85,6 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
-    console.log('THIS IS THE ID =====>', req.params.id);
     entrie.findOne({
         where: {
             userId: req.user.get().id,
@@ -117,6 +95,27 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
     .then(found => {
         if(found) {
             return res.render('entries/delete', { entrie: found.toJSON(), moment: moment });
+        } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
+            req.flash('Entry not found.');
+            res.redirect('/entries');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
+router.get('/:id', isLoggedIn, (req, res) => {
+    console.log('THIS IS THE ID =====>', req.params.id);
+    entrie.findOne({
+        where: {
+            userId: req.user.get().id,
+            id: parseInt(req.params.id)
+        },
+        include: [user, watershed, specie, technique, lure]
+    })
+    .then(found => {
+        if(found) {
+            return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('Entry not found.');

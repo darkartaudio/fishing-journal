@@ -3,7 +3,7 @@
         <div class="columns">
           <div class="column has-text-centered">
             <h1 class="title mb-0">Species</h1>
-            
+            (<a href="/species/edit/<%= specie.id %>">edit</a>) | (<a href="/species/delete/<%= specie.id %>">delete</a>)
           </div>
         </div>
         <div class="row columns is-multiline">
@@ -13,7 +13,7 @@
                         <img src="<%= specie.img %>" alt="<%= specie.name %>" />
                     </figure>
                     <p>
-                        <%= specie.name %> | <a href="/species/edit/<%= specie.id %>">(edit)</a> <a href="/species/delete/<%= specie.id %>">(delete)</a><br />
+                        <%= specie.name %><br />
                         <a href="<%= specie.wiki %>">wikipedia</a>
                     </p>
                 </div>
