@@ -1,113 +1,113 @@
 const express = require('express');
 const router = express.Router();
 const isLoggedIn = require('../middleware/isLoggedIn');
-const { specie } = require('../models');
+const { technique } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
-    specie.findAll()
-    .then(species => res.render('species/index', { species: species.map(s => s.toJSON()) }))
+    technique.findAll()
+    .then(techniques => res.render('techniques/index', { techniques: techniques.map(t => t.toJSON()) }))
     .catch(err => console.log(err));
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
-    return res.render('species/new');
+    return res.render('techniques/new');
 });
 
 router.get('/edit/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    technique.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/edit', { specie: found.toJSON() });
+            return res.render('techniques/edit', { technique: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Technique not found.');
+            res.redirect('/techniques');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    technique.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/delete', { specie: found.toJSON() });
+            return res.render('techniques/delete', { technique: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Technique not found.');
+            res.redirect('/techniques');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    technique.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/single', { specie: found.toJSON() });
+            return res.render('techniques/single', { technique: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Technique not found.');
+            res.redirect('/techniques');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
-    const insertSpecie = {...req.body};
-    specie.findOrCreate({
-        where: { name: insertSpecie.name }
+    const insertTechnique = {...req.body};
+    technique.findOrCreate({
+        where: { name: insertTechnique.name }
     })
     .then((row, created) => {
         if(created) {
-            req.flash(`Created species ${row.name}`);
-            res.redirect('/species');
+            req.flash(`Created technique ${row.name}`);
+            res.redirect('/techniques');
         } else {
-            req.flash(`Species ${row.name} already exists`);
-            res.redirect('/species');
+            req.flash(`Technique ${row.name} already exists`);
+            res.redirect('/techniques');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    technique.findOne({
         where: { id: parseInt(req.params.id) }
     })
-    .then(foundSpecie => {
-        const updateSpecie = {...req.body};
-        specie.update(updateSpecie, {
+    .then(foundtechnique => {
+        const updateTechnique = {...req.body};
+        technique.update(updateTechnique, {
             where: { id: parseInt(req.params.id) }
         })
-        .then(numRowsChanged => res.redirect(`/species/${parseInt(req.params.id)}`))
+        .then(numRowsChanged => res.redirect(`/techniques/${parseInt(req.params.id)}`))
         .catch(err => console.log(err));
     })
     .catch(err => console.log(err));
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
-    specie.destroy({
+    technique.destroy({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(numRowsDeleted => {
-        req.flash(`Species #${req.params.id} deleted`);
-        res.redirect('/species');
+        req.flash(`Technique #${req.params.id} deleted`);
+        res.redirect('/techniques');
     })
     .catch(err => console.log(err));
 });

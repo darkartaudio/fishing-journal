@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="section">
+        <div class="columns">
+            <div class="column has-text-centered">
+                <h1 class="title mb-0">Techniques</h1>
+                (<a href="/techniques/new">new</a>)
+            </div>
+        </div>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-6">
+                <% if(techniques.length > 0) { 
+                    techniques.forEach(t => { %>
+                    <a href="/techniques/<%= t.id %>">
+                        <div class="card large">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <p class="title is-6">
+                                            <%= t.name %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <% });
+                } else { %>
+                    <p>
+                        No techniques present.
+                    </p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

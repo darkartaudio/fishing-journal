@@ -1,113 +1,113 @@
 const express = require('express');
 const router = express.Router();
 const isLoggedIn = require('../middleware/isLoggedIn');
-const { specie } = require('../models');
+const { lure } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
-    specie.findAll()
-    .then(species => res.render('species/index', { species: species.map(s => s.toJSON()) }))
+    lure.findAll()
+    .then(lures => res.render('lures/index', { lures: lures.map(l => l.toJSON()) }))
     .catch(err => console.log(err));
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
-    return res.render('species/new');
+    return res.render('lures/new');
 });
 
 router.get('/edit/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    lure.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/edit', { specie: found.toJSON() });
+            return res.render('lures/edit', { lure: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Lure not found.');
+            res.redirect('/lures');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    lure.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/delete', { specie: found.toJSON() });
+            return res.render('lures/delete', { lure: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Lure not found.');
+            res.redirect('/lures');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    lure.findOne({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(found => {
         if(found) {
-            return res.render('species/single', { specie: found.toJSON() });
+            return res.render('lures/single', { lure: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
-            res.redirect('/species');
+            req.flash('Lure not found.');
+            res.redirect('/lures');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
-    const insertSpecie = {...req.body};
-    specie.findOrCreate({
-        where: { name: insertSpecie.name }
+    const insertLure = {...req.body};
+    lure.findOrCreate({
+        where: { name: insertLure.name }
     })
     .then((row, created) => {
         if(created) {
-            req.flash(`Created species ${row.name}`);
-            res.redirect('/species');
+            req.flash(`Created lure ${row.name}`);
+            res.redirect('/lures');
         } else {
-            req.flash(`Species ${row.name} already exists`);
-            res.redirect('/species');
+            req.flash(`Lure ${row.name} already exists`);
+            res.redirect('/lures');
         }
     })
     .catch(err => console.log(err));
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
-    specie.findOne({
+    lure.findOne({
         where: { id: parseInt(req.params.id) }
     })
-    .then(foundSpecie => {
-        const updateSpecie = {...req.body};
-        specie.update(updateSpecie, {
+    .then(foundlure => {
+        const updateLure = {...req.body};
+        lure.update(updateLure, {
             where: { id: parseInt(req.params.id) }
         })
-        .then(numRowsChanged => res.redirect(`/species/${parseInt(req.params.id)}`))
+        .then(numRowsChanged => res.redirect(`/lures/${parseInt(req.params.id)}`))
         .catch(err => console.log(err));
     })
     .catch(err => console.log(err));
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
-    specie.destroy({
+    lure.destroy({
         where: {
             id: parseInt(req.params.id)
         }
     })
     .then(numRowsDeleted => {
-        req.flash(`Species #${req.params.id} deleted`);
-        res.redirect('/species');
+        req.flash(`lure #${req.params.id} deleted`);
+        res.redirect('/lures');
     })
     .catch(err => console.log(err));
 });
