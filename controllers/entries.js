@@ -29,26 +29,6 @@ router.get('/', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.get('/:id', isLoggedIn, (req, res) => {
-    console.log('hip--------------------------------------------', parseInt(req.params.id));
-    entrie.findOne({
-        where: {
-            userId: req.user.get().id,
-            id: parseInt(req.params.id)
-        },
-        include: [user, watershed, specie, technique, lure]
-    })
-    .then(found => {
-        if(found) {
-            return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
-        } else {
-            req.flash('Entry not found.');
-            res.redirect('entries');
-        }
-    })
-    .catch(err => console.log(err));
-});
-
 router.get('/new', isLoggedIn, (req, res) => {
     watershed.findAll().then(watersheds => {
         specie.findAll().then(species => {
@@ -67,6 +47,26 @@ router.get('/new', isLoggedIn, (req, res) => {
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
+
+router.get('/:id', isLoggedIn, (req, res) => {
+    console.log('THIS IS THE ID =====>', req.params.id);
+    entrie.findOne({
+        where: {
+            userId: req.user.get().id,
+            id: parseInt(req.params.id)
+        },
+        include: [user, watershed, specie, technique, lure]
+    })
+    .then(found => {
+        if(found) {
+            return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
+        } else {
+            req.flash('Entry not found.');
+            res.redirect('/entries');
+        }
     })
     .catch(err => console.log(err));
 });
@@ -150,7 +150,7 @@ router.post('/new', isLoggedIn, (req, res) => {
                 insertEntrie.airTemp = weatherRes.data.hourly.temperature_2m[hr];
                 insertEntrie.windSpeed = weatherRes.data.hourly.windspeed_10m[hr];
                 insertEntrie.windDirection = degreesToDirection(weatherRes.data.hourly.winddirection_10m[hr]);
-                insertEntrie.barometer = parseFloat((weatherRes.data.hourly.pressure_msl[hr] * 0.02953).toFixed(2));
+                insertEntrie.barometer = parseFloat((weatherRes.data.hourly.pressure_msl[hr] * 0.02953).toFixed(2)); // constant converts kPa to inches mercury
                 insertEntrie.cloudCover = weatherRes.data.hourly.cloudcover[hr];
                 
                 insertEntrie.dailyHigh = weatherRes.data.daily.temperature_2m_max[0];
@@ -178,6 +178,7 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
         .then(flowRes => {
             let weatherQueryString;
 
+            // convert datetime-local format to YYYY-MM-DD for open-meteo API
             let weatherDate = moment(req.body.timestamp).format('YYYY-MM-DD');
     
             const recentQueryHead = `https://`;
