@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="section">
+        <div class="columns">
+            <div class="column has-text-centered">
+                <h1 class="title mb-0">Lures</h1>
+                (<a href="/lures/new">new</a>)
+            </div>
+        </div>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-6">
+                <% if(lures.length > 0) { 
+                    lures.forEach(l => { %>
+                    <a href="/lures/<%= l.id %>">
+                        <div class="card large">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <p class="title is-6">
+                                            <%= l.name %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                <% });
+                } else { %>
+                    <p>
+                        No lures present.
+                    </p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
