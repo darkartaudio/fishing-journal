@@ -11,4 +11,40 @@ router.get('/', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.get('/edit/:id', isLoggedIn, (req, res) => {
+    specie.findOne({
+        where: {
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(found => {
+        if(found) {
+            return res.render('species/edit', { specie: found.toJSON() });
+        } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
+            req.flash('Species not found.');
+            res.redirect('/species');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
+router.get('/:id', isLoggedIn, (req, res) => {
+    specie.findOne({
+        where: {
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(found => {
+        if(found) {
+            return res.render('species/single', { specie: found.toJSON() });
+        } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
+            req.flash('Species not found.');
+            res.redirect('/species');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
 module.exports = router;

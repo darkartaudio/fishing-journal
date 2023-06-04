@@ -1,35 +1,35 @@
 <div class="container">
     <div class="section">
         <div class="columns">
-          <div class="column has-text-centered">
-            <h1 class="title mb-0">Species</h1>
-            <a href="/species/new">new species</a>
-          </div>
+            <div class="column has-text-centered">
+                <h1 class="title mb-0">Species</h1>
+                <a href="/species/new">(new)</a>
+            </div>
         </div>
         <div id="app" class="row columns is-multiline">
             <div class="column is-6">
                 <% if(species.length > 0) { 
                     species.forEach(s => { %>
                     <a href="/species/<%= s.id %>">
-                    <div class="card large">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <figure class="image is-128x128">
-                                        <img src="<%= s.img %>" alt="<%= s.name %>">
-                                    </figure>
-                                    <p class="title is-6">
-                                        <%= s.name %><br />
-                                        <a href="<%= s.wiki %>">wikipedia</a>
-                                    </p>
-                                    <p class="is-6">
-                                        <a href="/species/edit/<%= s.id %>">(edit)</a><br />
-                                        <a href="/species/delete/<%= s.id %>">(delete)</a>    
-                                    </p>
+                        <div class="card large">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-128x128">
+                                            <img src="<%= s.img %>" alt="<%= s.name %>">
+                                        </figure>
+                                        <p class="title is-6">
+                                            <%= s.name %><br />
+                                            <a href="<%= s.wiki %>">wikipedia</a>
+                                        </p>
+                                        <p class="is-6">
+                                            <a href="/species/edit/<%= s.id %>">(edit)</a><br />
+                                            <a href="/species/delete/<%= s.id %>">(delete)</a>   
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </a>
                 <% });
                 } else { %>
@@ -39,6 +39,5 @@
                 <% } %>
             </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
