@@ -105,6 +105,27 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.get('/delete/:id', isLoggedIn, (req, res) => {
+    console.log('THIS IS THE ID =====>', req.params.id);
+    entrie.findOne({
+        where: {
+            userId: req.user.get().id,
+            id: parseInt(req.params.id)
+        },
+        include: [user, watershed, specie, technique, lure]
+    })
+    .then(found => {
+        if(found) {
+            return res.render('entries/delete', { entrie: found.toJSON(), moment: moment });
+        } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
+            req.flash('Entry not found.');
+            res.redirect('/entries');
+        }
+    })
+    .catch(err => console.log(err));
+});
+
 router.post('/new', isLoggedIn, (req, res) => {
     watershed.findOne({
         where: { id: req.body.watershedId }
@@ -216,7 +237,7 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                 insertEntrie.airTemp = weatherRes.data.hourly.temperature_2m[hr];
                 insertEntrie.windSpeed = weatherRes.data.hourly.windspeed_10m[hr];
                 insertEntrie.windDirection = degreesToDirection(weatherRes.data.hourly.winddirection_10m[hr]);
-                insertEntrie.barometer = parseFloat((weatherRes.data.hourly.pressure_msl[hr] * 0.02953).toFixed(2));
+                insertEntrie.barometer = parseFloat((weatherRes.data.hourly.pressure_msl[hr] * 0.02953).toFixed(2)); // constant converts kPa to inches mercury
                 insertEntrie.cloudCover = weatherRes.data.hourly.cloudcover[hr];
                 
                 insertEntrie.dailyHigh = weatherRes.data.daily.temperature_2m_max[0];
@@ -232,6 +253,20 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
+});
+
+router.delete('/:id', function(req, res) {
+    entrie.destroy({
+        where: { 
+            userId: req.user.get().id,
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(numRowsDeleted => {
+        req.flash(`Entry #${req.params.id} deleted`);
+        res.redirect('/entries');
     })
     .catch(err => console.log(err));
 });
