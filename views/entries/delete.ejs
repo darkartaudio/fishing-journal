@@ -2,8 +2,10 @@
     <div class="section">
         <div class="columns">
           <div class="column has-text-centered">
-            <h1 class="title mb-0">Journal Entry</h1>
-            (<a href="/entries/edit/<%= entrie.id %>">edit</a>) | (<a href="/entries/delete/<%= entrie.id %>">delete</a>) 
+            <h1 class="title mb-0">Delete Journal Entry</h1>
+            <form method="POST" action="/entries/<%= entrie.id %>?_method=DELETE">
+                <input class="button is-danger mt-1" type="submit" value="DELETE">
+            </form>
           </div>
         </div>
         <div class="row columns is-multiline">
