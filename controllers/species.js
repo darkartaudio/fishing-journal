@@ -10,3 +10,5 @@ router.get('/', isLoggedIn, (req, res) => {
     .then(species => res.render('species/index', { species: species.map(s => s.toJSON()) }))
     .catch(err => console.log(err));
 });
+
+module.exports = router;

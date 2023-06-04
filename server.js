@@ -46,6 +46,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', require('./controllers/auth'));
 app.use('/entries', require('./controllers/entries'));
+app.use('/species', require('./controllers/species'));
 
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get(); 

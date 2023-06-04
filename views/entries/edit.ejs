@@ -21,7 +21,7 @@
             <div>
                 <label for="waterTemp">Water Temperature</label>
                 <input type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="<%= entrie.waterTemp %>" oninput="this.nextElementSibling.value = this.value" />
-                <output>60</output> F
+                <output><%= entrie.waterTemp %></output> F
             </div>
             <div>
                 <label for="speciesId">Species</label>
@@ -35,12 +35,12 @@
             <div>
                 <label for="length">Length</label>
                 <input type="range" name="length" id="length" min="0" max="100" step="1" value="<%= entrie.length %>" oninput="this.nextElementSibling.value = this.value" />
-                <output>12</output> in
+                <output><%= entrie.length %></output> in
             </div>
             <div>
                 <label for="weight">Weight</label>
                 <input type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="<%= entrie.weight %>" oninput="this.nextElementSibling.value = this.value" />
-                <output>2</output> lbs
+                <output><%= entrie.weight %></output> lbs
             </div>
             <div>
                 <label for="techniqueId">Technique</label>
@@ -65,6 +65,7 @@
                 <input type="text" name="comment" id="comment" value="<%= entrie.comment %>">
             </div>
             <button type="submit">Submit</button>
+            <a href="/entries/<%= entrie.id %>">cancel</a>
         </form>
     </div>
 </div>

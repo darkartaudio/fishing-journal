@@ -64,6 +64,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
         } else {
+            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('Entry not found.');
             res.redirect('/entries');
         }
