@@ -2,7 +2,7 @@
     <div class="section">
         <div class="columns">
             <div class="column has-text-centered">
-            <h1 class="title">Edit lLure</h1><br />
+            <h1 class="title">Edit Lure</h1><br />
             </div>
         </div>
         <form action="/lures/edit/<%= lure.id %>/?_method=PUT" method="POST">
@@ -11,6 +11,7 @@
                 <input type="text" id="name" name="name" value="<%= lure.name %>" required />
             </div>
             <button type="submit">Submit</button>
+            <a href="/lures/<%= lure.id %>">cancel</a>
         </form>
     </div>
 </div>
