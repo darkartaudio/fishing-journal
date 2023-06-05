@@ -13,7 +13,7 @@
                     <div class="field">
                         <div class="control">
                             <label for="timestamp">Timestamp</label>
-                            <input class="input is-small" type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" required />
+                            <input class="input is-small" type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" value="<%= moment().format('YYYY-MM-DDTHH:mm') %>" required />
                         </div>
                     </div>
                     <div class="field">

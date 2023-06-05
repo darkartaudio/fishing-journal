@@ -12,10 +12,6 @@ select {
     text-align: center;
 }
 
-input[type=datetime-local] {
+input {
     text-align: center;
-}
-
-input[type=range] {
-    
 }
