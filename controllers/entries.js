@@ -146,11 +146,14 @@ router.post('/new', isLoggedIn, (req, res) => {
             if (daysInPast < 0) { // ie in the future
                 req.flash('error', 'Date must be in the past');
                 return res.redirect('/entries/new'); // redirect the user back to new entry page
-            } else if (daysInPast > 30) { // if date is 30 or more days in past, use historical
-                weatherQueryString = historicalQueryHead + queryTail;
-            } else { // otherwise, use current api
-                weatherQueryString = recentQueryHead + queryTail;
-            }
+            } 
+            // else if (daysInPast > 30) { // if date is 30 or more days in past, use historical
+            //     weatherQueryString = historicalQueryHead + queryTail;
+            // } else { // otherwise, use current api
+            //     weatherQueryString = recentQueryHead + queryTail;
+            // }
+
+            weatherQueryString = recentQueryHead + queryTail;
 
             axios.get(weatherQueryString)
             .then(weatherRes => {
@@ -211,11 +214,14 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
             if (daysInPast < 0) { // ie in the future
                 req.flash('error', 'Date must be in the past');
                 return res.redirect('/entries/new'); // redirect the user back to new entry page
-            } else if (daysInPast > 30) { // if date is 30 or more days in past, use historical
-                weatherQueryString = historicalQueryHead + queryTail;
-            } else { // otherwise, use current api
-                weatherQueryString = recentQueryHead + queryTail;
             }
+
+            weatherQueryString = recentQueryHead + queryTail;
+            // else if (daysInPast > 30) { // if date is 30 or more days in past, use historical
+            //     weatherQueryString = historicalQueryHead + queryTail;
+            // } else { // otherwise, use current api
+            //     weatherQueryString = recentQueryHead + queryTail;
+            // }
 
             axios.get(weatherQueryString)
             .then(weatherRes => {

@@ -72,11 +72,13 @@ router.post('/new', isLoggedIn, (req, res) => {
     technique.findOrCreate({
         where: { name: insertTechnique.name }
     })
-    .then((row, created) => {
+    .then(([row, created]) => {
         if(created) {
+            console.log('CREATED');
             req.flash(`Created technique ${row.name}`);
             res.redirect('/techniques');
         } else {
+            console.log('NOT CREATED');
             req.flash(`Technique ${row.name} already exists`);
             res.redirect('/techniques');
         }
