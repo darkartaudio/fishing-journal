@@ -8,14 +8,13 @@ body {
 }
 
 .box {
-
   background: var(--card-bg);
 }
 
 
-input::placeholder {
+/* input::placeholder {
   color: antiquewhite;
-}
+} */
 
 .navbar {
   background: var(--card-bg);

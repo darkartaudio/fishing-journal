@@ -2,69 +2,91 @@
     <div class="section">
         <div class="columns">
             <div class="column has-text-centered">
-            <h1 class="title">New Entry</h1><br />
+            <h1 class="title mb-0">New Entry</h1>
+            (<a href="/entries">cancel</a>)
             </div>
         </div>
-        <form action="/entries/new" method="POST">
-            <div>
-                <label for="timestamp">Timestamp</label>
-                <input type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" required />
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <form action="/entries/new" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <label for="timestamp">Timestamp</label>
+                            <input class="input is-small" type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="watershedId">Watershed</label>
+                            <select class="input is-small" name="watershedId" id="watershedId">
+                                <% watersheds.forEach(w => { %>
+                                    <option value="<%= w.id %>"><%= w.siteName %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="waterTemp">Water Temperature</label>
+                            <input class="input is-small" type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="60" oninput="this.nextElementSibling.value = this.value" />
+                            <output>60</output>°F
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                        <label for="speciesId">Species</label>
+                            <select class="input is-small" name="speciesId" id="speciesId">
+                                <% species.forEach(s => { %>
+                                    <option value="<%= s.id %>"><%= s.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="length">Length</label>
+                            <input class="input is-small" type="range" name="length" id="length" min="0" max="100" step="1" value="12" oninput="this.nextElementSibling.value = this.value" />
+                            <output>12</output> in
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="weight">Weight</label>
+                            <input class="input is-small" type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="2" oninput="this.nextElementSibling.value = this.value" />
+                            <output>2</output> lbs
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="techniqueId">Technique</label>
+                            <select class="input is-small" name="techniqueId" id="techniqueId">
+                                <% techniques.forEach(t => { %>
+                                    <option value="<%= t.id %>"><%= t.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="lureId">Lure</label>
+                            <select class="input is-small" name="lureId" id="lureId">
+                                <% lures.forEach(l => { %>
+                                    <option value="<%= l.id %>"><%= l.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="comment">Comment</label>
+                            <input class="input is-small" type="text" name="comment" id="comment" placeholder="Comment..." />
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-fullwidth is-small" type="submit">Submit</button>
+                </form>
             </div>
-            <div>
-                <label for="watershedId">Watershed</label>
-                <select name="watershedId" id="watershedId">
-                    <% watersheds.forEach(w => { %>
-                        <option value="<%= w.id %>"><%= w.siteName %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <div>
-                <label for="waterTemp">Water Temperature</label>
-                <input type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="60" oninput="this.nextElementSibling.value = this.value" />
-                <output>60</output> F
-            </div>
-            <div>
-                <label for="speciesId">Species</label>
-                <select name="speciesId" id="speciesId">
-                    <% species.forEach(s => { %>
-                        <option value="<%= s.id %>"><%= s.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/species/new">new species</a>
-            </div>
-            <div>
-                <label for="length">Length</label>
-                <input type="range" name="length" id="length" min="0" max="100" step="1" value="12" oninput="this.nextElementSibling.value = this.value" />
-                <output>12</output> in
-            </div>
-            <div>
-                <label for="weight">Weight</label>
-                <input type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="2" oninput="this.nextElementSibling.value = this.value" />
-                <output>2</output> lbs
-            </div>
-            <div>
-                <label for="techniqueId">Technique</label>
-                <select name="techniqueId" id="techniqueId">
-                    <% techniques.forEach(t => { %>
-                        <option value="<%= t.id %>"><%= t.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/techniques/new">new technique</a>
-            </div>
-            <div>
-                <label for="lureId">Lure</label>
-                <select name="lureId" id="lureId">
-                    <% lures.forEach(l => { %>
-                        <option value="<%= l.id %>"><%= l.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/lures/new">new lure</a>
-            </div>
-            <div>
-                <label for="comment">Comment</label>
-                <input type="text" name="comment" id="comment">
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+            <div class="column is-4"></div>
+        </div>
     </div>
 </div>

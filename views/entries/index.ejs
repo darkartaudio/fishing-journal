@@ -7,6 +7,7 @@
           </div>
         </div>
         <div id="app" class="row columns is-multiline">
+            <div class="column is-3"></div>
             <div class="column is-6">
                 <% if(entries.length > 0) { 
                     entries.forEach(e => { %>
@@ -15,12 +16,12 @@
                         <div class="card-content">
                             <div class="media">
                                 <div class="media-left">
-                                    <figure class="image is-48x48">
+                                    <figure class="image is-128x128">
                                         <% if (e.specie) { %>
                                             <img src="<%= e.specie.img %>" alt="<%= e.specie.name %>">
                                         <% } %>
                                     </figure>
-                                    <p class="title is-6">
+                                    <p class="has-text-weight-bold">
                                         <% if (e.specie) { %>
                                             <%= e.specie.name %><br />
                                         <% } %>
@@ -28,7 +29,7 @@
                                     </p>
                                 </div>
                                 <div class="media-content">
-                                    <p class="subtitle is-6">
+                                    <p>
                                         <%= e.watershed.siteName %>
                                     </p>
                                     <p>

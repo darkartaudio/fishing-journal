@@ -8,66 +8,81 @@
             </form>
           </div>
         </div>
-        <div class="row columns is-multiline">
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-3"></div>
             <div class="column is-6">
                 <div class="media-content">
-                    <figure class="image is-128x128">
-                        <% if (entrie.specie) { %>
-                            <img src="<%= entrie.specie.img %>" alt="<%= entrie.specie.name %>" />
-                        <% } %>
-                    </figure>
-                    <p>
-                        <span class="has-text-weight-bold">Species: </span><% if (entrie.specie) { %> <%= entrie.specie.name %> <% } %>
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Length: </span><%= entrie.length %> in
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Weight: </span><%= entrie.weight %> lbs
-                    </p>
-                    <hr />
-                    <p>
-                        <span class="has-text-weight-bold">Caught: </span><%= moment(entrie.timestamp).format('MMM Do Y HH:mm') %>
-                    </p>
-                    <hr />
-                    <p>
-                        <span class="has-text-weight-bold">Technique: </span><% if (entrie.technique) { %> <%= entrie.technique.name %> <% } %>
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Lure: </span><% if (entrie.lure) { %> <%= entrie.lure.name %> <% } %>
-                    </p>
-                    <hr />
-                    <p>
-                        <span class="has-text-weight-bold">Watershed: </span><%= entrie.watershed.siteName %>
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Flow: </span><%= entrie.waterFlow %> cfs
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Water Temperature: </span><%= entrie.waterTemp %>ºF
-                    </p>
-                    <hr />
-                    <p>
-                        <span class="has-text-weight-bold">Air Temperature: </span><%= entrie.airTemp %>ºF
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Daily High: </span><%= entrie.dailyHigh %>ºF
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Daily Low: </span><%= entrie.dailyLow %>ºF
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Barometer: </span><%= entrie.barometer %> Hg
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Cloud Cover: </span><%= entrie.cloudCover %>%
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Wind: </span><%= entrie.windDirection %> <%= entrie.windSpeed %>mph
-                    </p>
-                    <p>
-                        <span class="has-text-weight-bold">Daily Precipitation: </span><%= entrie.dailyPrecip %> in
-                    </p>
+                    <div class="card large">
+                        <div class="card-content">
+                            <div class="media">
+                                <figure class="image is-256x256">
+                                    <% if (entrie.specie) { %>
+                                        <img src="<%= entrie.specie.img %>" alt="<%= entrie.specie.name %>" />
+                                    <% } %>
+                                </figure>
+                                <div class="media-content">
+                                <p>
+                                    <span class="has-text-weight-bold">Species: </span><% if (entrie.specie) { %> <%= entrie.specie.name %> <% } %>
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Length: </span><%= entrie.length %> in
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Weight: </span><%= entrie.weight %> lbs
+                                </p>
+                                <hr />
+                                <p>
+                                    <span class="has-text-weight-bold">Caught: </span><%= moment(entrie.timestamp).format('MMM Do Y HH:mm') %>
+                                </p>
+                                <hr />
+                                <p>
+                                    <span class="has-text-weight-bold">Technique: </span><% if (entrie.technique) { %> <%= entrie.technique.name %> <% } %>
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Lure: </span><% if (entrie.lure) { %> <%= entrie.lure.name %> <% } %>
+                                </p>
+                                <hr />
+                                <p>
+                                    <span class="has-text-weight-bold">Watershed: </span><%= entrie.watershed.siteName %>
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Flow: </span><%= entrie.waterFlow %> cfs
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Water Temperature: </span><%= entrie.waterTemp %>ºF
+                                </p>
+                                <hr />
+                                <p>
+                                    <span class="has-text-weight-bold">Air Temperature: </span><%= entrie.airTemp %>ºF
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Daily High: </span><%= entrie.dailyHigh %>ºF
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Daily Low: </span><%= entrie.dailyLow %>ºF
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Barometer: </span><%= entrie.barometer %> Hg
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Cloud Cover: </span><%= entrie.cloudCover %>%
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Wind: </span><%= entrie.windDirection %> <%= entrie.windSpeed %>mph
+                                </p>
+                                <p>
+                                    <span class="has-text-weight-bold">Daily Precipitation: </span><%= entrie.dailyPrecip %> in
+                                </p>
+                                <hr />
+                                <p>
+                                    <span class="has-text-weight-bold">Comment:</span>
+                                </p>
+                                <p>
+                                    <%= entrie.comment %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

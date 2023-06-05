@@ -2,70 +2,91 @@
     <div class="section">
         <div class="columns">
             <div class="column has-text-centered">
-            <h1 class="title">Edit Entry</h1><br />
+            <h1 class="title mb-0">Edit Entry</h1>
+            (<a href="/entries/<%= entrie.id %>">cancel</a>)
             </div>
         </div>
-        <form action="/entries/edit/<%= entrie.id %>/?_method=PUT" method="POST">
-            <div>
-                <label for="timestamp">Timestamp</label>
-                <input type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" value="<%= moment(entrie.timestamp).format('YYYY-MM-DDTHH:mm') %>" required />
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <form action="/entries/edit/<%= entrie.id %>/?_method=PUT" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <label for="timestamp">Timestamp</label>
+                            <input class="input is-small" type="datetime-local" id="timestamp" name="timestamp" min="2023-01-01T00:00" max="<% moment() %>" value="<%= moment(entrie.timestamp).format('YYYY-MM-DDTHH:mm') %>" required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="watershedId">Watershed</label>
+                            <select class="input is-small" name="watershedId" id="watershedId">
+                                <% watersheds.forEach(w => { %>
+                                    <option value="<%= w.id %>" <% if (w.id === entrie.watershed.id) { %>selected<% } %>><%= w.siteName %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="waterTemp">Water Temperature</label>
+                            <input class="input is-small" type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="<%= entrie.waterTemp %>" oninput="this.nextElementSibling.value = this.value" />
+                            <output><%= entrie.waterTemp %></output>°F
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="speciesId">Species</label>
+                            <select class="input is-small" name="speciesId" id="speciesId">
+                                <% species.forEach(s => { %>
+                                    <option value="<%= s.id %>" <% if (entrie.specie && s.id === entrie.specie.id) { %>selected<% } %>><%= s.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="length">Length</label>
+                            <input class="input is-small" type="range" name="length" id="length" min="0" max="100" step="1" value="<%= entrie.length %>" oninput="this.nextElementSibling.value = this.value" />
+                            <output><%= entrie.length %></output> in
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="weight">Weight</label>
+                            <input class="input is-small" type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="<%= entrie.weight %>" oninput="this.nextElementSibling.value = this.value" />
+                            <output><%= entrie.weight %></output> lbs
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="techniqueId">Technique</label>
+                            <select class="input is-small" name="techniqueId" id="techniqueId">
+                                <% techniques.forEach(t => { %>
+                                    <option value="<%= t.id %>" <% if (entrie.technique && t.id === entrie.technique.id) { %>selected<% } %>><%= t.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="lureId">Lure</label>
+                            <select class="input is-small" name="lureId" id="lureId">
+                                <% lures.forEach(l => { %>
+                                    <option value="<%= l.id %>" <% if (entrie.lure && l.id === entrie.lure.id) { %>selected<% } %>><%= l.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="comment">Comment</label>
+                            <input class="input is-small" type="text" name="comment" id="comment" value="<%= entrie.comment %>">
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-fullwidth is-small" type="submit">Submit</button>
+                </form>
             </div>
-            <div>
-                <label for="watershedId">Watershed</label>
-                <select name="watershedId" id="watershedId">
-                    <% watersheds.forEach(w => { %>
-                        <option value="<%= w.id %>" <% if (w.id === entrie.watershed.id) { %>selected<% } %>><%= w.siteName %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <div>
-                <label for="waterTemp">Water Temperature</label>
-                <input type="range" name="waterTemp" id="waterTemp" min="30" max="100" step="1" value="<%= entrie.waterTemp %>" oninput="this.nextElementSibling.value = this.value" />
-                <output><%= entrie.waterTemp %></output> F
-            </div>
-            <div>
-                <label for="speciesId">Species</label>
-                <select name="speciesId" id="speciesId">
-                    <% species.forEach(s => { %>
-                        <option value="<%= s.id %>" <% if (entrie.specie && s.id === entrie.specie.id) { %>selected<% } %>><%= s.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/species/new">new species</a>
-            </div>
-            <div>
-                <label for="length">Length</label>
-                <input type="range" name="length" id="length" min="0" max="100" step="1" value="<%= entrie.length %>" oninput="this.nextElementSibling.value = this.value" />
-                <output><%= entrie.length %></output> in
-            </div>
-            <div>
-                <label for="weight">Weight</label>
-                <input type="range" name="weight" id="weight" min="0" max="50" step="0.5" value="<%= entrie.weight %>" oninput="this.nextElementSibling.value = this.value" />
-                <output><%= entrie.weight %></output> lbs
-            </div>
-            <div>
-                <label for="techniqueId">Technique</label>
-                <select name="techniqueId" id="techniqueId">
-                    <% techniques.forEach(t => { %>
-                        <option value="<%= t.id %>" <% if (entrie.technique && t.id === entrie.technique.id) { %>selected<% } %>><%= t.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/techniques/new">new technique</a>
-            </div>
-            <div>
-                <label for="lureId">Lure</label>
-                <select name="lureId" id="lureId">
-                    <% lures.forEach(l => { %>
-                        <option value="<%= l.id %>" <% if (entrie.lure && l.id === entrie.lure.id) { %>selected<% } %>><%= l.name %></option>
-                    <% }); %>
-                </select>
-                <a href="/lures/new">new lure</a>
-            </div>
-            <div>
-                <label for="comment">Comment</label>
-                <input type="text" name="comment" id="comment" value="<%= entrie.comment %>">
-            </div>
-            <button type="submit">Submit</button>
-            <a href="/entries/<%= entrie.id %>">cancel</a>
-        </form>
+            <div class="column is-4"></div>
+        </div>
     </div>
 </div>

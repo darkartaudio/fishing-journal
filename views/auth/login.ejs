@@ -1,20 +1,26 @@
 <div class="container">
-  <div class="section">
-    <div class="columns">
-      <div class="column has-text-centered">
-        <h1 class="title">Login</h1>
+  <div class="columns is-multiline">
+    <div class="column is-8 is-offset-2 register">
+      <div class="columns">
+        <div class="column is-3"></div>
+        <div class="column is-6 has-text-centered">
+          <h1 class="title is-3">Login</h1>
+          <form action="/auth/login" method="POST">
+            <div class="field">
+              <div class="control">
+                <input class="input is-small" type="email" name="email" placeholder="Email" />
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <input class="input is-small" type="password" name="password" placeholder="Password" />
+              </div>
+            </div>
+            <button class="button is-block is-info is-fullwidth is-small" type="submit">Login</button>
+          </form>
+        </div>
+        <div class="column is-3"></div>
       </div>
     </div>
-    <form action="/auth/login" method="POST">
-      <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" />
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" />
-      </div>
-      <button type="submit">Login</button>
-    </form>
   </div>
 </div>
