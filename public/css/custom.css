@@ -1,0 +1,21 @@
+.hero-body {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.section {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+select {
+    text-align: center;
+}
+
+input[type=datetime-local] {
+    text-align: center;
+}
+
+input[type=range] {
+    
+}
