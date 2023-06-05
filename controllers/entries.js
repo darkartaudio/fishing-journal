@@ -105,7 +105,6 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
-    console.log('THIS IS THE ID =====>', req.params.id);
     entrie.findOne({
         where: {
             userId: req.user.get().id,

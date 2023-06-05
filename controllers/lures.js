@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const isLoggedIn = require('../middleware/isLoggedIn');
-const { lure } = require('../models');
+const { lure, entrie } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
     lure.findAll()
@@ -106,8 +106,21 @@ router.delete('/:id', isLoggedIn, function(req, res) {
         }
     })
     .then(numRowsDeleted => {
-        req.flash(`lure #${req.params.id} deleted`);
-        res.redirect('/lures');
+        if (numRowsDeleted > 0) {
+            entrie.update({
+                lureId: null
+            },{
+                where: { lureId: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged => {
+                req.flash(`Lure #${req.params.id} deleted.`);
+                res.redirect('/lures');
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('No lures deleted.');
+            res.redirect('/lures');
+        }
     })
     .catch(err => console.log(err));
 });

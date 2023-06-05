@@ -10,10 +10,12 @@
             <div class="column is-6">
                 <div class="media-content">
                     <figure class="image is-128x128">
-                        <img src="<%= entrie.specie.img %>" alt="<%= entrie.specie.name %>" />
+                        <% if (entrie.specie) { %>
+                            <img src="<%= entrie.specie.img %>" alt="<%= entrie.specie.name %>" />
+                        <% } %>
                     </figure>
                     <p>
-                        <span class="has-text-weight-bold">Species: </span><%= entrie.specie.name %>
+                        <span class="has-text-weight-bold">Species: </span><% if (entrie.specie) { %> <%= entrie.specie.name %> <% } %>
                     </p>
                     <p>
                         <span class="has-text-weight-bold">Length: </span><%= entrie.length %> in
@@ -27,10 +29,10 @@
                     </p>
                     <hr />
                     <p>
-                        <span class="has-text-weight-bold">Technique: </span><%= entrie.technique.name %>
+                        <span class="has-text-weight-bold">Technique: </span><% if (entrie.technique) { %> <%= entrie.technique.name %> <% } %>
                     </p>
                     <p>
-                        <span class="has-text-weight-bold">Lure: </span><%= entrie.lure.name %>
+                        <span class="has-text-weight-bold">Lure: </span><% if (entrie.lure) { %> <%= entrie.lure.name %> <% } %>
                     </p>
                     <hr />
                     <p>

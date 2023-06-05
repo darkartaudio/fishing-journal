@@ -27,7 +27,7 @@
                 <label for="speciesId">Species</label>
                 <select name="speciesId" id="speciesId">
                     <% species.forEach(s => { %>
-                        <option value="<%= s.id %>" <% if (s.id === entrie.specie.id) { %>selected<% } %>><%= s.name %></option>
+                        <option value="<%= s.id %>" <% if (entrie.specie && s.id === entrie.specie.id) { %>selected<% } %>><%= s.name %></option>
                     <% }); %>
                 </select>
                 <a href="/species/new">new species</a>
@@ -46,7 +46,7 @@
                 <label for="techniqueId">Technique</label>
                 <select name="techniqueId" id="techniqueId">
                     <% techniques.forEach(t => { %>
-                        <option value="<%= t.id %>" <% if (t.id === entrie.technique.id) { %>selected<% } %>><%= t.name %></option>
+                        <option value="<%= t.id %>" <% if (entrie.technique && t.id === entrie.technique.id) { %>selected<% } %>><%= t.name %></option>
                     <% }); %>
                 </select>
                 <a href="/techniques/new">new technique</a>
@@ -55,7 +55,7 @@
                 <label for="lureId">Lure</label>
                 <select name="lureId" id="lureId">
                     <% lures.forEach(l => { %>
-                        <option value="<%= l.id %>" <% if (l.id === entrie.lure.id) { %>selected<% } %>><%= l.name %></option>
+                        <option value="<%= l.id %>" <% if (entrie.lure && l.id === entrie.lure.id) { %>selected<% } %>><%= l.name %></option>
                     <% }); %>
                 </select>
                 <a href="/lures/new">new lure</a>

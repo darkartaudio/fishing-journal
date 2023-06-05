@@ -16,10 +16,14 @@
                             <div class="media">
                                 <div class="media-left">
                                     <figure class="image is-48x48">
-                                        <img src="<%= e.specie.img %>" alt="<%= e.specie.name %>">
+                                        <% if (e.specie) { %>
+                                            <img src="<%= e.specie.img %>" alt="<%= e.specie.name %>">
+                                        <% } %>
                                     </figure>
                                     <p class="title is-6">
-                                        <%= e.specie.name %><br />
+                                        <% if (e.specie) { %>
+                                            <%= e.specie.name %><br />
+                                        <% } %>
                                         <%= e.length %> in, <%= e.weight %> lbs
                                     </p>
                                 </div>

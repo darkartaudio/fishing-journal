@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const isLoggedIn = require('../middleware/isLoggedIn');
-const { technique } = require('../models');
+const { technique, entrie } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
     technique.findAll()
@@ -106,8 +106,21 @@ router.delete('/:id', isLoggedIn, function(req, res) {
         }
     })
     .then(numRowsDeleted => {
-        req.flash(`Technique #${req.params.id} deleted`);
-        res.redirect('/techniques');
+        if (numRowsDeleted > 0) {
+            entrie.update({
+                techniqueId: null
+            },{
+                where: { techniqueId: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged => {
+                req.flash(`Technique #${req.params.id} deleted.`);
+                res.redirect('/techniques');
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('No techniques deleted.');
+            res.redirect('/techniques');
+        }
     })
     .catch(err => console.log(err));
 });
