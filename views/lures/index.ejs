@@ -7,7 +7,8 @@
             </div>
         </div>
         <div id="app" class="row columns is-multiline">
-            <div class="column is-6">
+            <div class="column is-4"></div>
+            <div class="column is-4">
                 <% if(lures.length > 0) { 
                     lures.forEach(l => { %>
                     <a href="/lures/<%= l.id %>">
@@ -15,7 +16,7 @@
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-left">
-                                        <p class="title is-6">
+                                        <p class="has-text-weight-bold is-6">
                                             <%= l.name %>
                                         </p>
                                     </div>
@@ -30,6 +31,7 @@
                     </p>
                 <% } %>
             </div>
+            <div class="column is-4"></div>
         </div>
     </div>
 </div>

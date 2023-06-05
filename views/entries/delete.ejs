@@ -3,9 +3,7 @@
         <div class="columns">
           <div class="column has-text-centered">
             <h1 class="title mb-0">Delete Journal Entry</h1>
-            <form method="POST" action="/entries/<%= entrie.id %>?_method=DELETE">
-                <input class="button is-danger mt-1" type="submit" value="DELETE">
-            </form>
+            (<a href="/entries/<%= entrie.id %>">cancel</a>)
           </div>
         </div>
         <div id="app" class="row columns is-multiline">
@@ -84,6 +82,9 @@
                         </div>
                     </div>
                 </div>
+                <form method="POST" action="/entries/<%= entrie.id %>?_method=DELETE">
+                    <input class="button is-danger mt-1" type="submit" value="DELETE">
+                </form>
             </div>
         </div>
     </div>
