@@ -17,7 +17,7 @@
                         <% } %>
                     </figure>
                     <p>
-                        <span class="has-text-weight-bold">Species: </span><%= if (entrie.specie) { entrie.specie.name } %>
+                        <span class="has-text-weight-bold">Species: </span><% if (entrie.specie) { %> <%= entrie.specie.name %> <% } %>
                     </p>
                     <p>
                         <span class="has-text-weight-bold">Length: </span><%= entrie.length %> in
@@ -31,10 +31,10 @@
                     </p>
                     <hr />
                     <p>
-                        <span class="has-text-weight-bold">Technique: </span><%= if (entrie.technique) { entrie.technique.name } %>
+                        <span class="has-text-weight-bold">Technique: </span><% if (entrie.technique) { %> <%= entrie.technique.name %> <% } %>
                     </p>
                     <p>
-                        <span class="has-text-weight-bold">Lure: </span><%= if (entrie.lure) { entrie.lure.name } %>
+                        <span class="has-text-weight-bold">Lure: </span><% if (entrie.lure) { %> <%= entrie.lure.name %> <% } %>
                     </p>
                     <hr />
                     <p>
