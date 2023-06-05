@@ -3,19 +3,28 @@
         <div class="columns">
           <div class="column has-text-centered">
             <h1 class="title mb-0">Delete Technique</h1>
-            <form method="POST" action="/techniques/<%= technique.id %>?_method=DELETE">
-                <input class="button is-danger mt-1" type="submit" value="DELETE">
-            </form>
+            (<a href="/techniques/<%= technique.id %>">cancel</a>)
           </div>
         </div>
-        <div class="row columns is-multiline">
-            <div class="column is-6">
-                <div class="media-content">
-                    <p>
-                        <%= technique.name %><br />
-                    </p>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <div class="card large">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="has-text-weight-bold">
+                                    <%= technique.name %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <form method="POST" action="/techniques/<%= technique.id %>?_method=DELETE">
+                    <input class="button is-danger mt-1" type="submit" value="DELETE">
+                </form>
             </div>
+            <div class="column is-4"></div>
         </div>
     </div>
 </div>

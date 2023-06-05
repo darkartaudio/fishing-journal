@@ -6,18 +6,26 @@
             (<a href="/species/edit/<%= specie.id %>">edit</a>) | (<a href="/species/delete/<%= specie.id %>">delete</a>)
           </div>
         </div>
-        <div class="row columns is-multiline">
-            <div class="column is-6">
-                <div class="media-content">
-                    <figure class="image is-128x128">
-                        <img src="<%= specie.img %>" alt="<%= specie.name %>" />
-                    </figure>
-                    <p>
-                        <%= specie.name %><br />
-                        <a href="<%= specie.wiki %>">wikipedia</a>
-                    </p>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <div class="card large">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <figure class="image is-256x256">
+                                    <img src="<%= specie.img %>" alt="<%= specie.name %>" />
+                                </figure>
+                                <p>
+                                    <%= specie.name %><br />
+                                    <a class="has-text-weight-bold" href="<%= specie.wiki %>">wikipedia</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="column is-4"></div>
         </div>
     </div>
 </div>

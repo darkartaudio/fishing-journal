@@ -7,7 +7,8 @@
             </div>
         </div>
         <div id="app" class="row columns is-multiline">
-            <div class="column is-6">
+            <div class="column is-4"></div>
+            <div class="column is-4">
                 <% if(species.length > 0) { 
                     species.forEach(s => { %>
                     <a href="/species/<%= s.id %>">
@@ -15,12 +16,14 @@
                             <div class="card-content">
                                 <div class="media">
                                     <div class="media-left">
-                                        <figure class="image is-128x128">
+                                        <figure class="image is-256x256">
                                             <img src="<%= s.img %>" alt="<%= s.name %>">
                                         </figure>
-                                        <p class="title is-6">
+                                    </div>
+                                    <div class="media-right">
+                                        <p class="is-6">
                                             <%= s.name %><br />
-                                            <a href="<%= s.wiki %>">wikipedia</a>
+                                            <a class="has-text-weight-bold" href="<%= s.wiki %>">wikipedia</a>
                                         </p>
                                     </div>
                                 </div>
@@ -34,6 +37,7 @@
                     </p>
                 <% } %>
             </div>
+            <div class="column is-4"></div>
         </div>
     </div>
 </div>

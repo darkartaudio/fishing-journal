@@ -6,14 +6,22 @@
             (<a href="/techniques/edit/<%= technique.id %>">edit</a>) | (<a href="/techniques/delete/<%= technique.id %>">delete</a>)
           </div>
         </div>
-        <div class="row columns is-multiline">
-            <div class="column is-6">
-                <div class="media-content">
-                    <p>
-                        <%= technique.name %>
-                    </p>
+        <div id="app" class="row columns is-multiline">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <div class="card large">
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="has-text-weight-bold">
+                                    <%= technique.name %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="column is-4"></div>
         </div>
     </div>
 </div>

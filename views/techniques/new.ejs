@@ -2,15 +2,24 @@
     <div class="section">
         <div class="columns">
             <div class="column has-text-centered">
-            <h1 class="title">New Technique</h1><br />
+                <h1 class="title mb-0">New Technique</h1>
+                (<a href="/techniques">cancel</a>)
             </div>
         </div>
-        <form action="/techniques/new" method="POST">
-            <div>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Technique name..." required />
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <form action="/techniques/new" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <label for="name">Name</label>
+                            <input class="input is-small" type="text" id="name" name="name" placeholder="Technique name..." required />
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-fullwidth is-small" type="submit">Submit</button>
+                </form>
             </div>
-            <button type="submit">Submit</button>
-        </form>
+            <div class="column is-4"></div>
+        </div>
     </div>
 </div>

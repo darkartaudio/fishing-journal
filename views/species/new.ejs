@@ -2,23 +2,36 @@
     <div class="section">
         <div class="columns">
             <div class="column has-text-centered">
-            <h1 class="title">New Species</h1><br />
+            <h1 class="title mb-0">New Species</h1>
+            (<a href="/species">cancel</a>)
             </div>
         </div>
-        <form action="/species/new" method="POST">
-            <div>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Species name..." required />
+        <div class="columns">
+            <div class="column is-4"></div>
+            <div class="column is-4">
+                <form action="/species/new" method="POST">
+                    <div class="field">
+                        <div class="control">
+                            <label for="name">Name</label>
+                            <input class="input is-small" type="text" id="name" name="name" placeholder="Species name..." required />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="img">Image</label>
+                            <input class="input is-small" type="text" id="img" name="img" placeholder="Image URL (optional)" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <label for="wiki">Wikipedia</label>
+                            <input class="input is-small" type="text" id="wiki" name="wiki" placeholder="Wikipedia URL (optional)" />
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-fullwidth is-small" type="submit">Submit</button>
+                </form>
             </div>
-            <div>
-                <label for="img">Image</label>
-                <input type="text" id="img" name="img" placeholder="Image URL (optional)" />
-            </div>
-            <div>
-                <label for="wiki">Wikipedia</label>
-                <input type="text" id="wiki" name="wiki" placeholder="Wikipedia URL (optional)" />
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+            <div class="column is-4"></div>
+        </div>
     </div>
 </div>
