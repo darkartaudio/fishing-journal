@@ -13,58 +13,51 @@ To use online, visit:
 * Add journal entries for catches.
     * Species, techniques, and lures are pre-loaded into the database.
     * Create custom species, lures, and techniques to meet your needs.
-* Move into a square occupied by a dragon to engage it in combat. 
-    * Click the attack buttons to launch attacks.
-    * Dragons of different colors have strengths and weaknesses against different elements.
-* Win the game by slaying all of the dragons, freeing the peasants from their reign of terror!
-* If the character's HP falls to zero, the game is over!
+* Review journal entries to draw conclusions about successful conditions and methods.
 
 ---
 
-# GAME FOOTAGE
+# SCREENSHOTS
 
-### START SPLASH SCREEN
-![Load Screen](screenshots/game-start.gif)
+### SPLASH SCREEN
+![Splash Screen](screenshots/splash.png)
 
-### MOVEMENT
-![Movement](screenshots/movement.gif)
+### JOURNAL ENTRIES
+![Journal Entries](screenshots/entries.png)
 
-### COMBAT
-![Combat](screenshots/combat.gif)
+### NEW ENTRY
+![New Entry](screenshots/new-entry.png)
 
 ---
 
 # ATTRIBUTION
-All sprites and backgrounds are used under free license.
-* Sprites: https://opengameart.org/content/dungeon-crawl-32x32-tiles
-* Metallic background: https://opengameart.org/content/rusted-metal-texture-pack
-* Parchment background: https://opengameart.org/content/varied-parchment
+* USGS Instantaneous Values Web Service: https://waterservices.usgs.gov/rest/IV-Service.html
+* Open-Meteo Free Weather API: https://open-meteo.com/
+* Background Image by Hunter Brumels: https://unsplash.com/@hbrumels
+* Fish images from Wikipedia: https://en.wikipedia.org
+* BulmaTemplates: https://github.com/BulmaTemplates/bulma-templates
 
 ---
 
 # HOW TO INSTALL
+* Requires `Node.js`, `Postgres`, and `Sequelize`
 1. `Fork` and `Clone` this repository to your machine.
-2. Open `index.html` in your browser to play Dragonaut.
-3. Open `index.html`, `app.js`, and `style.css` in a text editor to view/edit the code.
+2. Run `npm install` to install dependencies.
+3. Run `sequelize db:create`, `sequelize db:migrate:all`, and `sequelize db:seed:all` to setup database.
+3. Run `npm run dev` to start server.
+4. Open `http://localhost:3000` in a web browser to access app.
 
 ---
 
 # HOW IT WORKS
 
-Dragonaut is comprised of two game phases:
-1. `Movement`
-    * A movement engine runs on a 60ms interval, constantly refreshing the map within view of the character.
-    * In this phase, the `W` `A` `S` `D` keys move the character around the board.
-    * Collision with a dragon stops the movement engine and transitions the game into the second mode.
-2. `Combat`
-    * The dragon attacks every five seconds.
-    * The player clicks on the attack buttons to launch attacks.
-    * When the player launches attacks, the buttons are disabled for three seconds, after which another attack can be launched.
-    * When the dragon dies, the movement engine is restarted.
-    * Or, if all dragons are dead, the game ends!
+* Fishing Journal uses the `USGS API` to pole waterflow data from the location of your chosing at the date and time of your catch.
+* Using the latitude and longitude of the chosen watershed, Fishing Journal uses `Open-Meteo` to access the weather conditions at that time.
+* This data, along with other details provided upon the creation of your journal entry, are stored in a database for future retrieval.
 
-### CHARACTER, DRAGON, AND HYDRA CLASSES
-The primary entities in the game are represented by the `Character` class and the `Dragon` class. The BBEG (big bad evil guy) is represented by a `Hydra` class, which extends the `Dragon` class. Unlike the other, lesser dragons, the Hydra must be defeated 5 times before it stays down. This is accomplished by incrementing a `phase` variable each time the Hydra would die. After the last head falls off, it's dead!
+
+### API CALLS
+The main work behind Fishing Journal was to interface HTML forms with 
 
 ```javascript
 class Hydra extends Dragon {
