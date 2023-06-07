@@ -4,7 +4,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 const { technique, entrie } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
-    technique.findAll()
+    technique.findAll({ order: [['name', 'ASC']] })
     .then(techniques => res.render('techniques/index', { techniques: techniques.map(t => t.toJSON()) }))
     .catch(err => console.log(err));
 });
@@ -71,12 +71,10 @@ router.post('/new', isLoggedIn, (req, res) => {
     })
     .then(([row, created]) => {
         if(created) {
-            console.log('CREATED');
-            req.flash('success', `Created technique ${row.name}`);
+            req.flash('success', `Created technique '${row.name}'.`);
             res.redirect('/techniques');
         } else {
-            console.log('NOT CREATED');
-            req.flash('error', `Technique ${row.name} already exists`);
+            req.flash('error', `Technique '${row.name}' already exists.`);
             res.redirect('/techniques');
         }
     })
@@ -87,13 +85,26 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
     technique.findOne({
         where: { id: parseInt(req.params.id) }
     })
-    .then(foundtechnique => {
-        const updateTechnique = {...req.body};
-        technique.update(updateTechnique, {
-            where: { id: parseInt(req.params.id) }
-        })
-        .then(numRowsChanged => res.redirect(`/techniques/${parseInt(req.params.id)}`))
-        .catch(err => console.log(err));
+    .then(foundTechnique => {
+        if (foundTechnique) {
+            const updateTechnique = {...req.body};
+            technique.update(updateTechnique, {
+                where: { id: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged => {
+                if(numRowsChanged) {
+                    req.flash('success', `Technique updated.`);
+                    res.redirect(`/techniques/${parseInt(req.params.id)}`);
+                } else {
+                    req.flash('error', 'Technique not updated.');
+                    res.redirect(`/techniques/${parseInt(req.params.id)}`);
+                }
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('error', 'Technique not found.');
+            res.redirect('/techniques');
+        }
     })
     .catch(err => console.log(err));
 });
@@ -112,12 +123,17 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { techniqueId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                req.flash('success', `Technique #${req.params.id} deleted.`);
-                res.redirect('/techniques');
+                if (numRowsChanged) {
+                    req.flash('success', `Technique deleted.`);
+                    res.redirect('/techniques');
+                } else {
+                    req.flash('error', 'Technique not deleted.');
+                    res.redirect('/techniques');
+                }
             })
             .catch(err => console.log(err));
         } else {
-            req.flash('error', 'No techniques deleted.');
+            req.flash('error', 'Technique not deleted.');
             res.redirect('/techniques');
         }
     })
