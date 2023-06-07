@@ -4,7 +4,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 const { lure, entrie } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
-    lure.findAll()
+    lure.findAll({ order: [['name', 'ASC']] })
     .then(lures => res.render('lures/index', { lures: lures.map(l => l.toJSON()) }))
     .catch(err => console.log(err));
 });
@@ -23,8 +23,7 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('lures/edit', { lure: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Lure not found.');
+            req.flash('error', 'Lure not found.');
             res.redirect('/lures');
         }
     })
@@ -41,8 +40,7 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('lures/delete', { lure: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Lure not found.');
+            req.flash('error', 'Lure not found.');
             res.redirect('/lures');
         }
     })
@@ -59,8 +57,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('lures/single', { lure: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Lure not found.');
+            req.flash('error', 'Lure not found.');
             res.redirect('/lures');
         }
     })
@@ -72,12 +69,12 @@ router.post('/new', isLoggedIn, (req, res) => {
     lure.findOrCreate({
         where: { name: insertLure.name }
     })
-    .then((row, created) => {
+    .then(([row, created]) => {
         if(created) {
-            req.flash(`Created lure ${row.name}`);
+            req.flash('success', `Created lure '${row.name}'.`);
             res.redirect('/lures');
         } else {
-            req.flash(`Lure ${row.name} already exists`);
+            req.flash('error', `Lure ${row.name} already exists.`);
             res.redirect('/lures');
         }
     })
@@ -88,13 +85,26 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
     lure.findOne({
         where: { id: parseInt(req.params.id) }
     })
-    .then(foundlure => {
-        const updateLure = {...req.body};
-        lure.update(updateLure, {
-            where: { id: parseInt(req.params.id) }
-        })
-        .then(numRowsChanged => res.redirect(`/lures/${parseInt(req.params.id)}`))
-        .catch(err => console.log(err));
+    .then(foundLure => {
+        if (foundLure) {
+            const updateLure = {...req.body};
+            lure.update(updateLure, {
+                where: { id: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged =>  {
+                if(numRowsChanged) {
+                    req.flash('success', `Lure updated.`);
+                    res.redirect(`/lures/${parseInt(req.params.id)}`);
+                } else {
+                    req.flash('error', `Lure not updated.`);
+                    res.redirect(`/lures/${parseInt(req.params.id)}`);
+                }
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('error', 'Lure not found.');
+            res.redirect('/lures');
+        }
     })
     .catch(err => console.log(err));
 });
@@ -113,12 +123,12 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { lureId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                req.flash(`Lure #${req.params.id} deleted.`);
+                req.flash('success', `Lure deleted.`);
                 res.redirect('/lures');
             })
             .catch(err => console.log(err));
         } else {
-            req.flash('No lures deleted.');
+            req.flash('error', 'No lures deleted.');
             res.redirect('/lures');
         }
     })
