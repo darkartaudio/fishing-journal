@@ -23,8 +23,7 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('techniques/edit', { technique: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Technique not found.');
+            req.flash('error', 'Technique not found.');
             res.redirect('/techniques');
         }
     })
@@ -41,8 +40,7 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('techniques/delete', { technique: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Technique not found.');
+            req.flash('error', 'Technique not found.');
             res.redirect('/techniques');
         }
     })
@@ -59,8 +57,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('techniques/single', { technique: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Technique not found.');
+            req.flash('error', 'Technique not found.');
             res.redirect('/techniques');
         }
     })
@@ -75,11 +72,11 @@ router.post('/new', isLoggedIn, (req, res) => {
     .then(([row, created]) => {
         if(created) {
             console.log('CREATED');
-            req.flash(`Created technique ${row.name}`);
+            req.flash('success', `Created technique ${row.name}`);
             res.redirect('/techniques');
         } else {
             console.log('NOT CREATED');
-            req.flash(`Technique ${row.name} already exists`);
+            req.flash('error', `Technique ${row.name} already exists`);
             res.redirect('/techniques');
         }
     })
@@ -115,12 +112,12 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { techniqueId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                req.flash(`Technique #${req.params.id} deleted.`);
+                req.flash('success', `Technique #${req.params.id} deleted.`);
                 res.redirect('/techniques');
             })
             .catch(err => console.log(err));
         } else {
-            req.flash('No techniques deleted.');
+            req.flash('error', 'No techniques deleted.');
             res.redirect('/techniques');
         }
     })

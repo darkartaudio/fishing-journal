@@ -1,7 +1,7 @@
 {
-  "name": "express_authentication",
+  "name": "fishing-journal",
   "version": "1.0.0",
-  "description": "Express authentication template using Passport + Flash messages + custom middleware",
+  "description": "Fishing journal that leverages weather and flow APIs to establish data-driven patterns for success.",
   "main": "server.js",
   "directories": {
     "test": "test"
@@ -13,15 +13,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SEIRFX-621/express_authentication.git"
+    "url": "git+https://github.com/darkartaudio/fishing-journal"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SEIRFX-621/express_authentication/issues"
+    "url": "https://github.com/darkartaudio/fishing-journal/issues"
   },
-  "homepage": "https://github.com/SEIRFX-621/express_authentication#readme",
+  "homepage": "https://github.com/darkartaudio/fishing-journal#readme",
   "devDependencies": {
     "chai": "^4.3.6",
     "mocha": "^10.0.0",

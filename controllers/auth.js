@@ -14,7 +14,7 @@ router.get("/login", (req, res) => {
 router.get('/logout', function(req, res){
   req.logOut(function(err, next) {
     if (err) { return next(err); }
-    req.flash('success', 'Logging out... See you next time!');
+    req.flash('success', 'Logged out.');
     res.redirect('/');
   });
 });
@@ -22,8 +22,8 @@ router.get('/logout', function(req, res){
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/entries',
   failureRedirect: '/auth/login',
-  successFlash: 'Welcome back ...',
-  failureFlash: 'Either email or password is incorrect' 
+  successFlash: 'Welcome back!',
+  failureFlash: 'Either email or password is incorrect.' 
 }));
 
 router.post('/signup', async (req, res) => {
@@ -40,13 +40,13 @@ router.post('/signup', async (req, res) => {
         console.log(`----- ${_user.name} was created -----`);
         const successObject = {
             successRedirect: '/entries',
-            successFlash: `Welcome ${_user.name}. Account was created and logging in...`
+            successFlash: `Welcome ${_user.name}!`
         }
         // 
         passport.authenticate('local', successObject)(req, res);
     } else {
       // Send back email already exists
-      req.flash('error', 'Email already exists');
+      req.flash('error', 'Email already exists.');
       res.redirect('/auth/signup'); // redirect the user back to sign up page to try again
     }
   } catch (error) {

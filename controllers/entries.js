@@ -30,10 +30,11 @@ router.get('/', isLoggedIn, (req, res) => {
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
-    watershed.findAll().then(watersheds => {
-        specie.findAll().then(species => {
-            technique.findAll().then(techniques => {
-                lure.findAll().then(lures => {
+    // pass all watershed, species, technique, and lure options to new.ejs view
+    watershed.findAll({ order: [['siteName', 'ASC']] }).then(watersheds => {
+        specie.findAll({ order: [['name', 'ASC']] }).then(species => {
+            technique.findAll({ order: [['name', 'ASC']] }).then(techniques => {
+                lure.findAll({ order: [['name', 'ASC']] }).then(lures => {
                     return res.render('entries/new', {
                         watersheds: watersheds.map(w => w.toJSON()),
                         species: species.map(s => s.toJSON()),
@@ -51,35 +52,40 @@ router.get('/new', isLoggedIn, (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.get('/edit/:id', isLoggedIn, (req, res) => {
-    entrie.findOne({
+router.get('/edit/:id', isLoggedIn, (req, res) => {entrie.findOne({
         where: {
-            userId: req.user.get().id,
-            id: parseInt(req.params.id)
+            userId: req.user.get().id, // requires userId to match so that one can't mess with other users' entries
+            id: parseInt(req.params.id) // find an entry that matches the requested entrieId
         },
-        include: [user, watershed, specie, technique, lure]
+        include: [user, watershed, specie, technique, lure] // pulls related data from other tables
     })
     .then(e => {
-        watershed.findAll().then(watersheds => {
-            specie.findAll().then(species => {
-                technique.findAll().then(techniques => {
-                    lure.findAll().then(lures => {
-                        return res.render('entries/edit', {
-                            entrie: e.toJSON(),
-                            watersheds: watersheds.map(w => w.toJSON()),
-                            species: species.map(s => s.toJSON()),
-                            techniques: techniques.map(t => t.toJSON()),
-                            lures: lures.map(l => l.toJSON()),
-                            moment: moment
-                        });
+        if (e) {
+            // pass all watershed, species, technique, and lure options to edit.ejs view
+            watershed.findAll({ order: [['siteName', 'ASC']] }).then(watersheds => {
+                specie.findAll({ order: [['name', 'ASC']] }).then(species => {
+                    technique.findAll({ order: [['name', 'ASC']] }).then(techniques => {
+                        lure.findAll({ order: [['name', 'ASC']] }).then(lures => {
+                            return res.render('entries/edit', {
+                                entrie: e.toJSON(),
+                                watersheds: watersheds.map(w => w.toJSON()),
+                                species: species.map(s => s.toJSON()),
+                                techniques: techniques.map(t => t.toJSON()),
+                                lures: lures.map(l => l.toJSON()),
+                                moment: moment
+                            });
+                        })
+                        .catch(err => console.log(err));
                     })
                     .catch(err => console.log(err));
                 })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
+        } else { // ie, no matching entry - probably means user typed in random info into address bar
+            req.flash('error', 'Entry not found.');
+            res.redirect('/entries');
+        }
     })
     .catch(err => console.log(err));
 });
@@ -96,8 +102,7 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('entries/delete', { entrie: found.toJSON(), moment: moment });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Entry not found.');
+            req.flash('error', 'Entry not found.');
             res.redirect('/entries');
         }
     })
@@ -116,8 +121,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('entries/single', { entrie: found.toJSON(), moment: moment });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Entry not found.');
+            req.flash('error', 'Entry not found.');
             res.redirect('/entries');
         }
     })
@@ -144,9 +148,11 @@ router.post('/new', isLoggedIn, (req, res) => {
             let daysInPast = moment().diff(moment(req.body.timestamp)) / 86400000;
 
             if (daysInPast < 0) { // ie in the future
-                req.flash('error', 'Date must be in the past');
+                req.flash('error', 'Date must be in the past.');
                 return res.redirect('/entries/new'); // redirect the user back to new entry page
-            } 
+            }
+
+            // previously, used a different "historical data" API for older data, but it seems that the standard API covers all cases, so that code was removed
             // else if (daysInPast > 30) { // if date is 30 or more days in past, use historical
             //     weatherQueryString = historicalQueryHead + queryTail;
             // } else { // otherwise, use current api
@@ -181,7 +187,15 @@ router.post('/new', isLoggedIn, (req, res) => {
                 insertEntrie.dailyPrecip = weatherRes.data.daily.precipitation_sum[0];
 
                 entrie.create(insertEntrie)
-                .then(createdEntrie => res.redirect('/entries'))
+                .then(createdEntrie => {
+                    if(createdEntrie) {
+                        req.flash('success', `Entry created.`);
+                        res.redirect('/entries');
+                    } else {
+                        req.flash('error', 'Entry not created.');
+                        res.redirect('/entries');
+                    }
+                })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
@@ -196,7 +210,7 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
         where: { id: req.body.watershedId }
     })
     .then(ws => {
-        
+        // start with water flow API call
         axios.get(`https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&site=${ws.siteCode}&parameterCd=00060`)
         .then(flowRes => {
             let weatherQueryString;
@@ -212,8 +226,8 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
             let daysInPast = moment().diff(moment(req.body.timestamp)) / 86400000;
 
             if (daysInPast < 0) { // ie in the future
-                req.flash('error', 'Date must be in the past');
-                return res.redirect('/entries/new'); // redirect the user back to new entry page
+                req.flash('error', 'Date must be in the past.');
+                return res.redirect(`/entries/edit/${parseInt(req.params.id)}`); // redirect the user back to edit entry page
             }
 
             weatherQueryString = recentQueryHead + queryTail;
@@ -251,7 +265,15 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                 entrie.update(insertEntrie, {
                     where: { id: parseInt(req.params.id) }
                 })
-                .then(numRowsChanged => res.redirect(`/entries/${parseInt(req.params.id)}`))
+                .then(numRowsChanged => {
+                    if (numRowsChanged) {
+                        req.flash('success', 'Entry updated.');
+                        res.redirect(`/entries/${parseInt(req.params.id)}`);
+                    } else {
+                        req.flash('error', 'Entry not updated.');
+                        res.redirect(`/entries/${parseInt(req.params.id)}`);
+                    }
+                })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
@@ -269,8 +291,13 @@ router.delete('/:id', isLoggedIn, function(req, res) {
         }
     })
     .then(numRowsDeleted => {
-        req.flash(`Entry #${req.params.id} deleted`);
-        res.redirect('/entries');
+        if (numRowsDeleted) {
+            req.flash('success', `Entry deleted.`);
+            res.redirect('/entries');
+        } else {
+            req.flash('error', 'Entry not deleted.');
+            res.redirect('/entries');
+        }
     })
     .catch(err => console.log(err));
 });

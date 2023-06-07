@@ -24,7 +24,7 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
             return res.render('species/edit', { specie: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
+            req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
     })
@@ -42,7 +42,7 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
             return res.render('species/delete', { specie: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
+            req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
     })
@@ -60,7 +60,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
             return res.render('species/single', { specie: found.toJSON() });
         } else {
             // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
-            req.flash('Species not found.');
+            req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
     })
@@ -74,10 +74,10 @@ router.post('/new', isLoggedIn, (req, res) => {
     })
     .then((row, created) => {
         if(created) {
-            req.flash(`Created species ${row.name}`);
+            req.flash('success', `Created species ${row.name}`);
             res.redirect('/species');
         } else {
-            req.flash(`Species ${row.name} already exists`);
+            req.flash('error', `Species ${row.name} already exists.`);
             res.redirect('/species');
         }
     })
@@ -113,12 +113,12 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { specieId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                req.flash(`Species #${req.params.id} deleted.`);
+                req.flash('success', `Species #${req.params.id} deleted.`);
                 res.redirect('/species');
             })
             .catch(err => console.log(err));
         } else {
-            req.flash('No species deleted.');
+            req.flash('error', 'No species deleted.');
             res.redirect('/species');
         }
     })
