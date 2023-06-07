@@ -1,12 +1,10 @@
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
 const layouts = require('express-ejs-layouts');
 const app = express();
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/ppConfig');
-const isLoggedIn = require('./middleware/isLoggedIn');
 const methodOverride = require('method-override');
 
 const SECRET_SESSION = process.env.SECRET_SESSION;
@@ -50,9 +48,9 @@ app.use('/species', require('./controllers/species'));
 app.use('/techniques', require('./controllers/techniques'));
 app.use('/lures', require('./controllers/lures'));
 
-app.get('/profile', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get(); 
-  res.render('profile', { id, name, email });
+app.get('*', (req, res) => {
+  req.flash('error', 'Page not found.');
+  res.redirect('/');
 });
 
 const PORT = process.env.PORT || 3000;
