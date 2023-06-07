@@ -40,7 +40,6 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('species/delete', { specie: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
@@ -72,10 +71,10 @@ router.post('/new', isLoggedIn, (req, res) => {
     })
     .then(([row, created]) => {
         if(created) {
-            req.flash('success', `Created species ${row.name}.`);
+            req.flash('success', `Created species '${row.name}'.`);
             res.redirect('/species');
         } else {
-            req.flash('error', `Species ${row.name} already exists.`);
+            req.flash('error', `Species '${row.name}' already exists.`);
             res.redirect('/species');
         }
     })

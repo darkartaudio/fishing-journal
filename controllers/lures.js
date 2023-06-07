@@ -74,7 +74,7 @@ router.post('/new', isLoggedIn, (req, res) => {
             req.flash('success', `Created lure '${row.name}'.`);
             res.redirect('/lures');
         } else {
-            req.flash('error', `Lure ${row.name} already exists.`);
+            req.flash('error', `Lure '${row.name}' already exists.`);
             res.redirect('/lures');
         }
     })
