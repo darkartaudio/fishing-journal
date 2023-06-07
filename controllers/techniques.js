@@ -123,13 +123,8 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { techniqueId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                if (numRowsChanged) {
-                    req.flash('success', `Technique deleted.`);
-                    res.redirect('/techniques');
-                } else {
-                    req.flash('error', 'Technique not deleted.');
-                    res.redirect('/techniques');
-                }
+                req.flash('success', `Technique deleted.`);
+                res.redirect('/techniques');
             })
             .catch(err => console.log(err));
         } else {

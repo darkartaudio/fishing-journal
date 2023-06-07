@@ -4,7 +4,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 const { specie, entrie } = require('../models');
 
 router.get('/', isLoggedIn, (req, res) => {
-    specie.findAll()
+    specie.findAll({ order: [['name', 'ASC']] })
     .then(species => res.render('species/index', { species: species.map(s => s.toJSON()) }))
     .catch(err => console.log(err));
 });
@@ -23,7 +23,6 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('species/edit', { specie: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
@@ -59,7 +58,6 @@ router.get('/:id', isLoggedIn, (req, res) => {
         if(found) {
             return res.render('species/single', { specie: found.toJSON() });
         } else {
-            // ASK FOR HELP FROM ROME, FLASH MESSAGE NOT SHOWING
             req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
@@ -72,9 +70,9 @@ router.post('/new', isLoggedIn, (req, res) => {
     specie.findOrCreate({
         where: { name: insertSpecie.name }
     })
-    .then((row, created) => {
+    .then(([row, created]) => {
         if(created) {
-            req.flash('success', `Created species ${row.name}`);
+            req.flash('success', `Created species ${row.name}.`);
             res.redirect('/species');
         } else {
             req.flash('error', `Species ${row.name} already exists.`);
@@ -89,12 +87,25 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
         where: { id: parseInt(req.params.id) }
     })
     .then(foundSpecie => {
-        const updateSpecie = {...req.body};
-        specie.update(updateSpecie, {
-            where: { id: parseInt(req.params.id) }
-        })
-        .then(numRowsChanged => res.redirect(`/species/${parseInt(req.params.id)}`))
-        .catch(err => console.log(err));
+        if (foundSpecie) {
+            const updateSpecie = {...req.body};
+            specie.update(updateSpecie, {
+                where: { id: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged => {
+                if (numRowsChanged) {
+                    req.flash('success', 'Species updated.');
+                    res.redirect(`/species/${parseInt(req.params.id)}`);
+                } else {
+                    req.flash('error', 'Species not updated.');
+                    res.redirect(`/species/${parseInt(req.params.id)}`);
+                }
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('error', 'Species not found.');
+            res.redirect('/species');
+        }
     })
     .catch(err => console.log(err));
 });
@@ -113,7 +124,7 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 where: { specieId: parseInt(req.params.id) }
             })
             .then(numRowsChanged => {
-                req.flash('success', `Species #${req.params.id} deleted.`);
+                req.flash('success', `Species deleted.`);
                 res.redirect('/species');
             })
             .catch(err => console.log(err));
