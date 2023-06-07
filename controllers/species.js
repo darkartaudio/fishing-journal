@@ -132,7 +132,11 @@ router.delete('/:id', isLoggedIn, function(req, res) {
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', err.name);
+        res.redirect(`/species/${parseInt(req.params.id)}`);
+    });
 });
 
 module.exports = router;

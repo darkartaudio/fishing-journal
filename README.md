@@ -87,7 +87,7 @@ const stations = flowOnly.map(station => {
 
 await queryInterface.bulkInsert('watersheds', stations, {});
 ```
-Here we use the latitude and longitude data from the `USGS` API call to tailor a query string for the `Open-Meteo` API. The result is then used to create an object for `Sequelize` to insert into the database.
+Here we use the latitude and longitude data from the `USGS` API call to tailor a query string for the `Open-Meteo` API, which provides weather data for the location and time of the catch. The result is then used to create an object for `Sequelize` to insert into the database.
 
 ```javascript
 axios.get(`https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&site=${ws.siteCode}&parameterCd=00060`)
@@ -106,6 +106,12 @@ axios.get(`https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&site=${ws.sit
         const insertEntrie = {...req.body};
         insertEntrie.watershedId = parseInt(insertEntrie.watershedId);
         insertEntrie.specieId = parseInt(insertEntrie.speciesId);
+...
+        let hr = moment(req.body.timestamp).hours();
+        insertEntrie.airTemp = weatherRes.data.hourly.temperature_2m[hr];
+        insertEntrie.windSpeed = weatherRes.data.hourly.windspeed_10m[hr];
+        insertEntrie.windDirection = degreesToDirection(weatherRes.data.hourly.winddirection_10m[hr]);
+        insertEntrie.barometer = parseFloat((weatherRes.data.hourly.pressure_msl[hr] * 0.02953).toFixed(2)); // constant converts kPa to inches mercury
 ...
         entrie.create(insertEntrie)
         .then(createdEntrie => {
