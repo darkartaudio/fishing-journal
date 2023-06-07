@@ -1,7 +1,9 @@
 # ![Fishing Journal](/public/images/android-chrome-192x192.png)
-SEIRFX 221 WC Project 2: Fishing Journal
+SEIRFX 221 WC Project 2
 
-Log catches, along with river flow and weather conditions values.
+# Fishing Journal
+
+Leverage weather and water flow information to establish data-driven patterns for success.
 
 To use online, visit: 
 
@@ -51,203 +53,127 @@ To use online, visit:
 
 # HOW IT WORKS
 
-* Fishing Journal uses the `USGS API` to pole waterflow data from the location of your chosing at the date and time of your catch.
+* Fishing Journal uses the `USGS` API to pole waterflow data from the location of your chosing at the date and time of your catch.
 * Using the latitude and longitude of the chosen watershed, Fishing Journal uses `Open-Meteo` to access the weather conditions at that time.
-* This data, along with other details provided upon the creation of your journal entry, are stored in a database for future retrieval.
+* This data, along with information provided by the user, are stored in a database for future retrieval.
 
 
 ### API CALLS
-The main work behind Fishing Journal was to interface HTML forms with 
+
+The main work behind Fishing Journal was to interface HTML form data with the USGS and Open-Meteo API query formats.
+
+To keep the scope of this phase of development manageable, I chose to seed my database with only stream-type USGS gauges in the state of Tennessee.
 
 ```javascript
-class Hydra extends Dragon {
-    ...
-    this.phase = 5; // the hydra must be "killed" 5 times to actually die
-    ...
-    // called when an attack "kills" the hydra
-    die() {
-        gameEvents.unshift({ text: '', class: 'invis' }); // add spacer line to the story
-        
-        // change the phase of the dragon and replenish health for phases 5-2
-        // type of effective and resisted attacks change, as well as image
-        switch (this.phase) {
-            case 5:
-                gameEvents.unshift({ text: this.headDown, class: 'emphasis' });
-                this.effective = 'shock';
-                this.resist = 'acid';
-                this.img = hydraFour;
-                this.health = 20;
-                break;
-            case 4:
-                gameEvents.unshift({ text: this.headDown, class: 'emphasis' });
-                this.effective = 'acid';
-                this.resist = 'shock';
-                this.img = hydraThree;
-                this.health = 20;
-                break;
-    ...
-            case 1: // for phase one, hydra actually dies
-            super.die();
-            return true;
-            break;
-        }
-        this.render(); // redraw the hydra 
-        this.phase--; // hydra phase number is decremented
-    }
-}
-```
-
-### THE MAP
-Dragonaut uses an HTML `<canvas>` to draw out the game map.
-
-The map is stored in a two-dimensional array.
-
-```javascript
-let map = [
-//    0    1    2    3    4    5    6    7    8
-    ['0', '0', '0', '0', '0', '0', '0', '0', '0'], // 00
-    ['0', 'w', '0', '-', '-', '-', '0', 'g', '0'], // 01
-    ['0', 'W', '0', '-', '-', '-', '0', 'R', '0'], // 02
-    ['0', '-', '-', '-', '-', '-', '-', '-', '0'], // 03
-    ['0', '-', '-', '0', '0', '0', '-', '-', '0'], // 04
-    ['0', '-', '-', '0', 'G', '0', '-', '-', '0'], // 05
-    ['0', '-', '-', '0', '-', '0', '-', '-', '0'], // 06
-    ['0', '-', '-', '-', '-', '-', '-', '-', '0'], // 07
-    ['0', '-', '-', '-', '-', '-', '-', '-', '0'], // 08
-    ['0', 'Y', '0', '-', '-', '-', '0', '-', '0'], // 09
-    ['0', 'r', '0', '-', '-', '-', '0', 'y', '0'], // 10
-    ['0', '0', '0', '0', '-', '0', '0', '0', '0'], // 11
-    ['0', '0', '0', '0', 'C', '0', '0', '0', '0']  // 12
-];
-```
-
-
-#### LEGEND
-* G = green dragon, W = white dragon, R = red dragon, Y = yellow dragon
-* g = green book, w = white book, r = red book, y = yellow book
-* C = character
-* 0 = wall tile
-* \- = floor tile
-* 0 values are used by renderMap function to create functional barriers
-* other values are for easily visually laying out the map and have no functional effect
-
-The game uses the array to render the visible portion of the map on the `<canvas>`.
-
-```javascript
-// draw the (viewRange * 2 + 1) by (viewRange * 2 + 1) map square around character
-function renderMap() {
-
-    // game map coordinates relative to character
-    let startX = character.x - viewRange;
-    let endX = character.x + viewRange;
-    let startY = character.y - viewRange;
-    let endY = character.y + viewRange;
-
-
-    // we map each map square into a corresponding square on the HTML canvas
-    // char and canvas variables initialized here
-    let charX;
-    let charY
-    let canvasY;
-    let canvasX;
-
-    // iterate through both the character Y axis and canvas Y axis
-    for (charY = startY, canvasY = 0; charY <= endY; charY++, canvasY++) {
-        
-        // iterate through the both the character X axis and canvas X axis
-        for (charX = startX, canvasX = 0; charX <= endX; charX++, canvasX++) {
-
-            // check if coordinates describe a square within the game map
-            if (
-                charX >= 0 // x coordinate is within left side of map
-                && charX < map[0].length // x coordinate is within right side of map
-                && charY >= 0 // y coordinate is within top of map
-                && charY < map.length // y coordinate is within bottom of map
-            ) {
-                switch (map[charY][charX]) {
-                    case '0': // wall, draw wall tile
-                        ctx.drawImage(wallTile, canvasX * gridSize, canvasY * gridSize, gridSize, gridSize);
-                        break;
-                    default: // floor, draw floor tile
-                        ctx.drawImage(floorTile, canvasX * gridSize, canvasY * gridSize, gridSize, gridSize);
-                        break;
-                }
-            } else { // off the map, draw darkness
-                ctx.drawImage(darkTile, canvasX * gridSize, canvasY * gridSize, gridSize, gridSize);
-            }
-        }
-    }
-}
-```
-### COLLISION DETECTION
-Each character, enemy, or item fits exactly into a 32x32 square on the map, and is represented by `x` and `y` coordinates in the two-dimensional `map` array. This makes collision detection a relatively simple matter.
-
-Snippet from `checkForCollisions()`
-
-```javascript
-dragons.forEach((d) => {
-    // if player collides with a dragon, i.e. x and y coordinates are the same
-    if(d.alive && d.x === character.x && d.y === character.y) {
-        gameEvents.unshift({ text: '', class: 'invis' }); // add spacer line to the story
-        gameEvents.unshift({ text: `${character.name} engages a ${d.name} in glorious combat!`, class: 'emphasis' });
-        combat(d); // combat begins
-    }
+await axios.get('https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&stateCd=TN&siteType=ST&siteStatus=active')
+.then(async response => {
+// filters the list of stations to only those of water-flow type (in other words, excludes water-depth type)
+const flowOnly = response.data.value.timeSeries.filter(station => {
+    return station.variable.variableCode[0].value === '00060';
 });
-```
 
-### IS VISIBLE
-Similarly, we check if an item or enemy `isVisible` by determining if its `x` and `y` coordinates fall within the character's `viewRange`.
+const stations = flowOnly.map(station => {
+    return {
+        siteName: station.sourceInfo.siteName,
+        siteCode: station.sourceInfo.siteCode[0].value,
+        latitude: station.sourceInfo.geoLocation.geogLocation.latitude.toFixed(2),
+        longitude: station.sourceInfo.geoLocation.geogLocation.longitude.toFixed(2),
+        timeZone: parseInt(station.sourceInfo.timeZoneInfo.defaultTimeZone.zoneOffset.slice(0,3)),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+
+    };
+});
+
+await queryInterface.bulkInsert('watersheds', stations, {});
+```
+Here we use the latitude and longitude data from the `USGS` API call to tailor a query string for the `Open-Meteo` API. The result is then used to create an object for `Sequelize` to insert into the database.
 
 ```javascript
-// number of map squares in each direction that the character can see
-const viewRange = 3;
+axios.get(`https://waterservices.usgs.gov/nwis/iv/?format=json,1.1&site=${ws.siteCode}&parameterCd=00060`)
+.then(flowRes => {
+    let weatherQueryString;
 
+    let weatherDate = moment(req.body.timestamp).format('YYYY-MM-DD');
+
+    const recentQueryHead = `https://`;
+    const queryTail = `api.open-meteo.com/v1/forecast?latitude=${ws.latitude}&longitude=${ws.longitude}&start_date=${weatherDate}&end_date=${weatherDate}&hourly=temperature_2m,precipitation,pressure_msl,cloudcover,windspeed_10m,winddirection_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch`;
+    
+    weatherQueryString = recentQueryHead + queryTail;
 ...
+    axios.get(weatherQueryString)
+    .then(weatherRes => {
+        const insertEntrie = {...req.body};
+        insertEntrie.watershedId = parseInt(insertEntrie.watershedId);
+        insertEntrie.specieId = parseInt(insertEntrie.speciesId);
+...
+        entrie.create(insertEntrie)
+        .then(createdEntrie => {
+            if(createdEntrie) {
+                req.flash('success', `Entry created.`);
+                res.redirect('/entries');
+            }
+        })
+    })
+})
+```
 
-function isVisible(obj) {
-    // game map coordinates relative to character
-    let startX = character.x - viewRange;
-    let endX = character.x + viewRange;
-    let startY = character.y - viewRange;
-    let endY = character.y + viewRange;
+### DATABASE ASSOCIATIONS
 
-    // if obj is within view, return true
-    if (
-        obj.x >= startX &&
-        obj.x <= endX &&
-        obj.y >= startY &&
-        obj.y <= endY
-    ) {
-        return true;
-    }
+Fishing Journal is pre-loaded with default species, techniques, and lures. Users may also create, edit, and delete their own. When one of these items is deleted, it becomes necessary to unset all references to that item in existing journal entries.
 
-    // otherwise return false
-    return false;
-}
+```javascript
+router.delete('/:id', isLoggedIn, function(req, res) {
+    specie.destroy({
+        where: {
+            id: parseInt(req.params.id)
+        }
+    })
+    .then(numRowsDeleted => {
+        if (numRowsDeleted > 0) {
+            entrie.update({
+                specieId: null
+            },{
+                where: { specieId: parseInt(req.params.id) }
+            })
+            .then(numRowsChanged => {
+                req.flash('success', `Species deleted.`);
+                res.redirect('/species');
+            })
+            .catch(err => console.log(err));
+        } else {
+            req.flash('error', 'No species deleted.');
+            res.redirect('/species');
+        }
+    })
+    .catch(err => console.log(err));
+});
 ```
 
 ---
 
-# INTO THE FUTURE
+# FUTURE GOALS
 
-### REVAMP COMBAT
-If I return to this project in the future, I'd like to revamp the `Combat` phase of the game, changing the display to a side-view with space between the character and enemy. This would create some real estate to use for attack animations.
+### MAP FUNCTIONALITY
+Integrate a map API, which will allow the geographical location for entries to be more flexible, and allow for the use of watersheds that don't have an associated USGS flow gauge.
 
-### MORE COMPLEX LEVELS, EXTENDED GAMEPLAY
-I'd like to use this game engine to build some longer, more complex levels, with new items and enemy types.
+### WIDER AREA OF COVERAGE
+Expand coverage to the entirety of the US, and to stillwater fisheries.
+
+### SEARCH AND FILTER FUNCTIONALITY
+Offer a range of search and filter parameters for entries to be easily sorted.
 
 ---
 
 # WHITEBOARDS
 
-### INITIAL BRAINSTORM SESSION
-![Brainstorm](./whiteboards/proj1-brainstorm1-040323.png)
-
-### INITIAL GRID LAYOUT
-![Grid](./whiteboards/proj1-brainstorm2.png)
+![Table Layout](./screenshots/wireframes/table-layout.png)
+![Index](./screenshots/wireframes/index.png)
+![Journal](./screenshots/wireframes/journal.png)
+![Single](./screenshots/wireframes/single.png)
 
 ---
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/4f7c989c-6745-4455-a2e9-fb50c005b212/deploy-status)](https://app.netlify.com/sites/dragonaut/deploys)
 
-![CC0](./img/cc0.png)
+![CC0](./screenshots/cc0.png)
