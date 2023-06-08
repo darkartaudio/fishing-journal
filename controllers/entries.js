@@ -26,7 +26,11 @@ router.get('/', isLoggedIn, (req, res) => {
     })
     // render the list of entries
     .then(entries => res.render('entries/index', { entries: entries.map(e => e.toJSON()), moment: moment }))
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
@@ -43,13 +47,29 @@ router.get('/new', isLoggedIn, (req, res) => {
                         moment: moment
                     });
                 })
-                .catch(err => console.log(err));
+                .catch(err => { 
+                    console.log(err);
+                    req.flash('error', 'Server error.');
+                    res.redirect('/');
+                });
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         })
-        .catch(err => console.log(err));
+        .catch(err => { 
+            console.log(err);
+            req.flash('error', 'Server error.');
+            res.redirect('/');
+        });
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/edit/:id', isLoggedIn, (req, res) => {entrie.findOne({
@@ -75,19 +95,39 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {entrie.findOne({
                                 moment: moment
                             });
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => { 
+                            console.log(err);
+                            req.flash('error', 'Server error.');
+                            res.redirect('/');
+                        });
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => { 
+                        console.log(err);
+                        req.flash('error', 'Server error.');
+                        res.redirect('/');
+                    });
                 })
-                .catch(err => console.log(err));
+                .catch(err => { 
+                    console.log(err);
+                    req.flash('error', 'Server error.');
+                    res.redirect('/');
+                });
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else { // ie, no matching entry - probably means user typed in random info into address bar
             req.flash('error', 'Entry not found.');
             res.redirect('/entries');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
@@ -106,7 +146,11 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
             res.redirect('/entries');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
@@ -125,7 +169,11 @@ router.get('/:id', isLoggedIn, (req, res) => {
             res.redirect('/entries');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
@@ -196,13 +244,29 @@ router.post('/new', isLoggedIn, (req, res) => {
                         res.redirect('/entries');
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err => { 
+                    console.log(err);
+                    req.flash('error', 'Server error.');
+                    res.redirect('/');
+                });
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         })
-        .catch(err => console.log(err));
+        .catch(err => { 
+            console.log(err);
+            req.flash('error', 'Server error.');
+            res.redirect('/');
+        });
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
@@ -274,13 +338,29 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                         res.redirect(`/entries/${parseInt(req.params.id)}`);
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err => { 
+                    console.log(err);
+                    req.flash('error', 'Server error.');
+                    res.redirect('/');
+                });
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         })
-        .catch(err => console.log(err));
+        .catch(err => { 
+            console.log(err);
+            req.flash('error', 'Server error.');
+            res.redirect('/');
+        });
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
@@ -299,7 +379,11 @@ router.delete('/:id', isLoggedIn, function(req, res) {
             res.redirect('/entries');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 module.exports = router;

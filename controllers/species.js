@@ -6,7 +6,11 @@ const { specie, entrie } = require('../models');
 router.get('/', isLoggedIn, (req, res) => {
     specie.findAll({ order: [['name', 'ASC']] })
     .then(species => res.render('species/index', { species: species.map(s => s.toJSON()) }))
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
@@ -27,7 +31,11 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
@@ -44,7 +52,11 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
@@ -61,7 +73,11 @@ router.get('/:id', isLoggedIn, (req, res) => {
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
@@ -78,7 +94,11 @@ router.post('/new', isLoggedIn, (req, res) => {
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
@@ -100,13 +120,21 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                     res.redirect(`/species/${parseInt(req.params.id)}`);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'Species not found.');
             res.redirect('/species');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
@@ -126,7 +154,11 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 req.flash('success', `Species deleted.`);
                 res.redirect('/species');
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'No species deleted.');
             res.redirect('/species');

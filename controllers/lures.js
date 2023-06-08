@@ -6,7 +6,11 @@ const { lure, entrie } = require('../models');
 router.get('/', isLoggedIn, (req, res) => {
     lure.findAll({ order: [['name', 'ASC']] })
     .then(lures => res.render('lures/index', { lures: lures.map(l => l.toJSON()) }))
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
@@ -27,7 +31,11 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
             res.redirect('/lures');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
@@ -44,7 +52,11 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
             res.redirect('/lures');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
@@ -61,7 +73,11 @@ router.get('/:id', isLoggedIn, (req, res) => {
             res.redirect('/lures');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
@@ -78,7 +94,11 @@ router.post('/new', isLoggedIn, (req, res) => {
             res.redirect('/lures');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
@@ -100,13 +120,21 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                     res.redirect(`/lures/${parseInt(req.params.id)}`);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'Lure not found.');
             res.redirect('/lures');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
@@ -126,7 +154,11 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 req.flash('success', `Lure deleted.`);
                 res.redirect('/lures');
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'No lures deleted.');
             res.redirect('/lures');

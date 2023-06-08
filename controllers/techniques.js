@@ -6,7 +6,11 @@ const { technique, entrie } = require('../models');
 router.get('/', isLoggedIn, (req, res) => {
     technique.findAll({ order: [['name', 'ASC']] })
     .then(techniques => res.render('techniques/index', { techniques: techniques.map(t => t.toJSON()) }))
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/new', isLoggedIn, (req, res) => {
@@ -27,7 +31,11 @@ router.get('/edit/:id', isLoggedIn, (req, res) => {
             res.redirect('/techniques');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/delete/:id', isLoggedIn, (req, res) => {
@@ -44,7 +52,11 @@ router.get('/delete/:id', isLoggedIn, (req, res) => {
             res.redirect('/techniques');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.get('/:id', isLoggedIn, (req, res) => {
@@ -61,7 +73,11 @@ router.get('/:id', isLoggedIn, (req, res) => {
             res.redirect('/techniques');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.post('/new', isLoggedIn, (req, res) => {
@@ -78,7 +94,11 @@ router.post('/new', isLoggedIn, (req, res) => {
             res.redirect('/techniques');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.put('/edit/:id', isLoggedIn, (req, res) => {
@@ -100,13 +120,21 @@ router.put('/edit/:id', isLoggedIn, (req, res) => {
                     res.redirect(`/techniques/${parseInt(req.params.id)}`);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'Technique not found.');
             res.redirect('/techniques');
         }
     })
-    .catch(err => console.log(err));
+    .catch(err => { 
+        console.log(err);
+        req.flash('error', 'Server error.');
+        res.redirect('/');
+    });
 });
 
 router.delete('/:id', isLoggedIn, function(req, res) {
@@ -126,7 +154,11 @@ router.delete('/:id', isLoggedIn, function(req, res) {
                 req.flash('success', `Technique deleted.`);
                 res.redirect('/techniques');
             })
-            .catch(err => console.log(err));
+            .catch(err => { 
+                console.log(err);
+                req.flash('error', 'Server error.');
+                res.redirect('/');
+            });
         } else {
             req.flash('error', 'Technique not deleted.');
             res.redirect('/techniques');
