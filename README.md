@@ -5,7 +5,7 @@ SEIRFX 221 WC Project 2
 
 Leverage weather and water flow information to establish data-driven patterns for success.
 
-To use online, visit: 
+To use online, visit: https://fishing-journal.herokuapp.com/
 
 ---
 
@@ -183,7 +183,5 @@ Offer a range of search and filter parameters for entries to be easily sorted.
 ![Single](./screenshots/wireframes/single.png)
 
 ---
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/4f7c989c-6745-4455-a2e9-fb50c005b212/deploy-status)](https://app.netlify.com/sites/dragonaut/deploys)
 
 ![CC0](./screenshots/cc0.png)
